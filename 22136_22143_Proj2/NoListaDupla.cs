@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class NoListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
+public class NoListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro<Dado>
 {
     NoListaDupla<Dado> anterior;
     Dado info;

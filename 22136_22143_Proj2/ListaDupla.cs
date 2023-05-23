@@ -1,10 +1,12 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
+public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRegistro<Dado>, new()
 {
     NoListaDupla<Dado> primeiro, ultimo, atual;
     int quantosNos;
@@ -15,40 +17,45 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
         quantosNos = 0;
     }
 
-    public bool EstaVazia
+    public bool EstaVazio
     {
         get => primeiro == null;
     }
 
-    public void InserirAntesDoInicio(Dado novoDado)
+    public bool IncluirNoInicio(Dado novoDado) //ver o porque q é bool
     {
         var novoNo = new NoListaDupla<Dado>(novoDado);
-
-        if (EstaVazia)
+        
+        if (EstaVazio)
             ultimo = novoNo;
 
         primeiro.Anterior = novoNo;
         novoNo.Proximo = primeiro;
         primeiro = novoNo;
         quantosNos++;
+
+        return true;
     }
 
-    public void InserirAposFim(Dado novoDado)
+    public bool IncluirAposFim(Dado novoDado) //ver o porque que é bool
     {
         var novoNo = new NoListaDupla<Dado>(novoDado);
 
-        if (EstaVazia)
+        if (EstaVazio)
             primeiro = novoNo;
 
         ultimo.Proximo = novoNo;
         novoNo.Anterior = ultimo;
         ultimo = novoNo;
         quantosNos++;
+
+        return true;
     }
 
-    public bool ExisteDado(Dado dadoProcurado)
+    public bool Existe(Dado dadoProcurado, out int ondeEsta)
     {
-        if (EstaVazia)
+        ondeEsta = 0;
+        if (EstaVazio)
             return false;
 
         atual = primeiro;
@@ -58,7 +65,10 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
                 return true;
             else
                 if (atual.Info.CompareTo(dadoProcurado) < 0)
+                { 
                     atual = atual.Proximo;
+                    ondeEsta++;
+                }
                 else
                     if (atual.Info.CompareTo(dadoProcurado) > 0)
                         return false;
@@ -67,62 +77,95 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
         return false;
     }
 
-    public void AvancarAtual() 
+    public void AvancarPosicao() 
     { 
        atual = atual.Proximo;
     }
 
-    public void RetrocederAtual() 
+    public void RetrocederPosicao() 
     { 
         atual = atual.Anterior;
     }
 
-    public bool EstaNoPrimeiro
+    public bool EstaNoInicio
     {
         get => atual == primeiro;
     }
 
-    public bool EstaNoUltimo
+    public bool EstaNoFim
     {
         get => atual == ultimo;
     }
+    public Situacao SituacaoAtual { get => SituacaoAtual ; set => SituacaoAtual = value; }
+    public int PosicaoAtual 
+    { 
+       get 
+       {
+            int pAtual = 0;
+            Existe(atual.Info, out pAtual);
+            return pAtual;
+       }
 
-    public void ExcluirAtual()
-    {
-        if (!EstaVazia)
+       set => PosicionarEm(value); 
+    }
+
+    public int Tamanho => quantosNos;
+
+    public Dado this[int indice] 
+    { 
+        get
         {
-            if (EstaNoPrimeiro)
+            PosicionarEm(indice);
+            return DadoAtual();
+        }
+
+        set
+        {
+            PosicionarEm(indice);
+            this.atual.Info = value;
+        }
+    }
+
+    public bool ExcluirAtual()
+    {
+        if (!EstaVazio)
+        {
+            if (EstaNoInicio)
                 primeiro = atual.Proximo;
-            if (EstaNoUltimo)
+            if (EstaNoFim)
                 ultimo = atual.Anterior;
             atual.Anterior.Proximo = atual.Proximo;
             atual.Proximo.Anterior = atual.Anterior;
             atual = atual.Proximo;
             quantosNos--;
+            return true;
         }
+        return false;
     }
 
-    public void Excluir(Dado dadoAExcluir)
+    public bool Excluir(Dado dadoAExcluir)
     {
-        if(ExisteDado(dadoAExcluir))
+        if(Existe(dadoAExcluir, out int posicao))
         {
-            ExcluirAtual();
+            return ExcluirAtual();
         }
+
+        return false;
     }
 
-    public void IncluirEmOrdem(Dado novoDado)
+    public bool Incluir(Dado novoDado)
     {
-        if (EstaVazia)
-            InserirAntesDoInicio(novoDado);
+        if (EstaVazio)
+            return IncluirNoInicio(novoDado);
         else
         {
             if (novoDado.CompareTo(primeiro.Info) < 0)
-                InserirAntesDoInicio(novoDado);
+                return IncluirNoInicio(novoDado);
             else
                 if (novoDado.CompareTo(ultimo.Info) > 0)
-                    InserirAposFim(novoDado);
+                    return IncluirAposFim(novoDado);
                 else
-                    if(!ExisteDado(novoDado))
+                    if(!Existe(novoDado, out int posicao))
                     {
                         var novoNo = new NoListaDupla<Dado>(novoDado);
                         atual.Anterior.Proximo = novoNo;
@@ -131,16 +174,23 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
                         novoNo.Proximo = atual;
                         atual = novoNo;
                         quantosNos++;
+                        return true;
                     }
                     else
-                        throw new Exception("Dado Já Existente");
+                        return false;
         }
+    }
+
+    public bool Incluir(Dado novoDado, int posicaoDeInclusao)
+    {
+        PosicionarEm(posicaoDeInclusao);
+        return Incluir(novoDado); //funciona, mas não é o ideal
     }
 
     public void Ordenar()
     {
         var listaOrdenada = new ListaDupla<Dado>();
-        while(!this.EstaVazia)
+        while(!this.EstaVazio)
         {
             NoListaDupla<Dado> oMenor = this.primeiro;
             for(this.atual=this.primeiro;this.atual!=null;this.atual=this.atual.Proximo)
@@ -160,7 +210,7 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
             {
                 oMenor.Anterior.Proximo = oMenor.Proximo;
                 this.quantosNos--;
-                listaOrdenada.InserirAposFim(oMenor.Info);
+                listaOrdenada.IncluirAposFim(oMenor.Info);
             }
         }
 
@@ -178,6 +228,11 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
     public void PosicionarNoUltimo()
     {
         atual = ultimo;
+    }
+
+    public void PosicionarEm(int posicaoDesejada)
+    {
+        throw new NotImplementedException();
     }
 
     public Dado DadoAtual()
@@ -202,7 +257,37 @@ public class ListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro
 
         quantosNos = i;
     }
-                                                            
+
+    public void ExibirDados()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ExibirDados(ListBox lista)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ExibirDados(ComboBox lista)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ExibirDados(TextBox lista)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LerDados(string nomeArquivo)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void GravarDados(string nomeArquivo)
+    {
+        throw new NotImplementedException();
+    }
+
     //criar métodos para:
     //
     //--Incluir nó antes do primeiro
