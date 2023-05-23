@@ -10,6 +10,8 @@ using System.Windows.Forms;
 
 namespace _22136_22143_Proj2
 {
+    // Nome: Hugo Gomes Soares - RA: 22136
+    // Nome: Maria Eduarda de Jesus Padovan - RA: 22143
     public partial class Form1 : Form
     {
         public Form1()
