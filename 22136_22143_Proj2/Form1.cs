@@ -23,5 +23,10 @@ namespace _22136_22143_Proj2
         {
 
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
