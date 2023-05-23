@@ -57,7 +57,7 @@
     <Compile Include="IRegistro.cs" />
     <Compile Include="Ligacao.cs" />
     <Compile Include="ListaDupla.cs" />
-    <Compile Include="NoDuplo.cs" />
+    <Compile Include="NoListaDupla.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
