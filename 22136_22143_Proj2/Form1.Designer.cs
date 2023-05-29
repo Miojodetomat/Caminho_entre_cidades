@@ -38,8 +38,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCodigo = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnInicio = new System.Windows.Forms.ToolStripButton();
             this.btnAnterior = new System.Windows.Forms.ToolStripButton();
@@ -113,8 +111,6 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtNome);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.txtCodigo);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(18, 58);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
@@ -128,22 +124,24 @@
             // 
             this.lsbArquivo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.lsbArquivo.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lsbArquivo.FormattingEnabled = true;
-            this.lsbArquivo.ItemHeight = 20;
-            this.lsbArquivo.Location = new System.Drawing.Point(9, 207);
+            this.lsbArquivo.ItemHeight = 19;
+            this.lsbArquivo.Location = new System.Drawing.Point(8, 182);
             this.lsbArquivo.Margin = new System.Windows.Forms.Padding(4);
             this.lsbArquivo.Name = "lsbArquivo";
-            this.lsbArquivo.Size = new System.Drawing.Size(313, 64);
+            this.lsbArquivo.Size = new System.Drawing.Size(313, 118);
             this.lsbArquivo.TabIndex = 8;
             // 
             // nudY
             // 
+            this.nudY.DecimalPlaces = 6;
             this.nudY.Increment = new decimal(new int[] {
             1,
             0,
             0,
-            131072});
-            this.nudY.Location = new System.Drawing.Point(158, 167);
+            393216});
+            this.nudY.Location = new System.Drawing.Point(156, 128);
             this.nudY.Margin = new System.Windows.Forms.Padding(4);
             this.nudY.Maximum = new decimal(new int[] {
             1,
@@ -151,13 +149,13 @@
             0,
             0});
             this.nudY.Name = "nudY";
-            this.nudY.Size = new System.Drawing.Size(166, 26);
+            this.nudY.Size = new System.Drawing.Size(169, 26);
             this.nudY.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 169);
+            this.label4.Location = new System.Drawing.Point(10, 130);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(116, 20);
@@ -166,12 +164,13 @@
             // 
             // nudX
             // 
+            this.nudX.DecimalPlaces = 6;
             this.nudX.Increment = new decimal(new int[] {
             1,
             0,
             0,
-            131072});
-            this.nudX.Location = new System.Drawing.Point(158, 122);
+            327680});
+            this.nudX.Location = new System.Drawing.Point(156, 82);
             this.nudX.Margin = new System.Windows.Forms.Padding(4);
             this.nudX.Maximum = new decimal(new int[] {
             1,
@@ -179,13 +178,13 @@
             0,
             0});
             this.nudX.Name = "nudX";
-            this.nudX.Size = new System.Drawing.Size(166, 26);
+            this.nudX.Size = new System.Drawing.Size(169, 26);
             this.nudX.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 124);
+            this.label3.Location = new System.Drawing.Point(10, 84);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 20);
@@ -194,39 +193,21 @@
             // 
             // txtNome
             // 
-            this.txtNome.Location = new System.Drawing.Point(158, 76);
+            this.txtNome.Location = new System.Drawing.Point(156, 32);
             this.txtNome.Margin = new System.Windows.Forms.Padding(4);
             this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(164, 26);
+            this.txtNome.Size = new System.Drawing.Size(169, 26);
             this.txtNome.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 80);
+            this.label2.Location = new System.Drawing.Point(10, 35);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(128, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "Nome da cidade:";
-            // 
-            // txtCodigo
-            // 
-            this.txtCodigo.Location = new System.Drawing.Point(158, 29);
-            this.txtCodigo.Margin = new System.Windows.Forms.Padding(4);
-            this.txtCodigo.Name = "txtCodigo";
-            this.txtCodigo.Size = new System.Drawing.Size(164, 26);
-            this.txtCodigo.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 38);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(136, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Código da cidade:";
             // 
             // toolStrip1
             // 
@@ -263,6 +244,7 @@
             this.btnInicio.Size = new System.Drawing.Size(40, 51);
             this.btnInicio.Text = "Início";
             this.btnInicio.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnInicio.Click += new System.EventHandler(this.btnInicio_Click);
             // 
             // btnAnterior
             // 
@@ -272,6 +254,7 @@
             this.btnAnterior.Size = new System.Drawing.Size(54, 51);
             this.btnAnterior.Text = "Anterior";
             this.btnAnterior.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
             // 
             // btnProximo
             // 
@@ -281,6 +264,7 @@
             this.btnProximo.Size = new System.Drawing.Size(56, 51);
             this.btnProximo.Text = "Próximo";
             this.btnProximo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnProximo.Click += new System.EventHandler(this.btnProximo_Click);
             // 
             // btnUltimo
             // 
@@ -290,6 +274,7 @@
             this.btnUltimo.Size = new System.Drawing.Size(47, 51);
             this.btnUltimo.Text = "Último";
             this.btnUltimo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnUltimo.Click += new System.EventHandler(this.btnUltimo_Click);
             // 
             // toolStripSeparator1
             // 
@@ -609,8 +594,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtCodigo;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cbDestino;
         private System.Windows.Forms.ComboBox cbOrigem;

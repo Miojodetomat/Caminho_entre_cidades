@@ -1,0 +1,4 @@
+Coimbra         0,193 0,485
+Burgos          0,494 0,261
+Loule           0,218 0,796
+Albacete        0,609 0,609

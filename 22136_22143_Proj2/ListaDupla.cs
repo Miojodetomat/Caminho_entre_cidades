@@ -52,13 +52,18 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         var novoNo = new NoListaDupla<Dado>(novoDado);
 
         if (EstaVazio)
+        {
             primeiro = novoNo;
+        }
         else
             if (ultimo.Info.CompareTo(novoDado) == 0)
                 return false;
+        else
+        {
+            ultimo.Proximo = novoNo;
+            novoNo.Anterior = ultimo;
+        }
 
-        ultimo.Proximo = novoNo;
-        novoNo.Anterior = ultimo;
         ultimo = novoNo;
         quantosNos++;
 
@@ -296,13 +301,15 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados(ListBox lista)
     {
-        lista.Items.Add("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
+        lista.Items.Add("Nome".PadRight(15, ' ') + " " + "X".PadLeft(6, ' ') + "Y".PadLeft(6, ' '));
+        int posicaoAtual = this.PosicaoAtual;
         PosicionarNoPrimeiro();
         while(atual != null)
         {
             lista.Items.Add(atual.Info);
             AvancarPosicao();
         }
+        PosicionarEm(posicaoAtual);
     }
 
     public void ExibirDados(ComboBox lista)
