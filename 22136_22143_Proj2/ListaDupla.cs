@@ -10,6 +10,7 @@ using System.Windows.Forms;
 public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRegistro<Dado>, new()
 {
     NoListaDupla<Dado> primeiro, ultimo, atual;
+    Situacao situacaoAtual;
     int quantosNos;
 
     public ListaDupla()
@@ -30,8 +31,6 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         if (EstaVazio)
         {
             ultimo = novoNo;
-            primeiro = novoNo;
-            quantosNos++;
         }
         else
             if (primeiro.Info.CompareTo(novoDado) == 0)
@@ -40,9 +39,10 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
             {
                 novoNo.Proximo = primeiro;
                 primeiro.Anterior = novoNo;
-                primeiro = novoNo;
-                quantosNos++;
             }
+
+        primeiro = novoNo;
+        quantosNos++;
 
         return true;
     }
@@ -109,7 +109,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
     {
         get => atual == ultimo;
     }
-    public Situacao SituacaoAtual { get => SituacaoAtual ; set => SituacaoAtual = value; }
+    public Situacao SituacaoAtual { get => situacaoAtual ; set => situacaoAtual = value; }
     public int PosicaoAtual 
     { 
        get 
@@ -268,16 +268,10 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public Dado DadoAtual()
     {
-        return atual.Info;
-    }
+        if (atual == null)
+            return default;
 
-    public void PercorrerLista() //tirar
-    {
-        int i = 0;
-        for (atual = primeiro; atual != null; atual = atual.Proximo)
-            i++;
-       
-        quantosNos = i;
+        return atual.Info;
     }
 
     public void PercorrerListaAoContrario() //tirar

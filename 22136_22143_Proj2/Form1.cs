@@ -22,16 +22,6 @@ namespace _22136_22143_Proj2
 
         ListaDupla<Cidade> listaCidades;
 
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             if(dlgAbrir.ShowDialog() == DialogResult.OK)
@@ -42,7 +32,7 @@ namespace _22136_22143_Proj2
                     listaCidades.LerDados(dlgAbrir.FileName);
                     pbMapa.Invalidate();
                 }
-                catch(IOException)
+                catch(Exception)
                 {
                     MessageBox.Show("Erro de leitura no arquivo.");
                 }
@@ -52,11 +42,17 @@ namespace _22136_22143_Proj2
         private void pbMapa_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            Pen pen = new Pen(Color.Black);
+            Pen pen = new Pen(Color.Black, 2);
+            Brush brush = new SolidBrush(Color.LightGray);
+            Brush brush2 = new SolidBrush(Color.Black);
+            Font fonte = new Font("Arial", 10);
             listaCidades.PosicionarNoPrimeiro();
             while (listaCidades.DadoAtual() != null)
             {
-                g.DrawEllipse(pen, (float) listaCidades.DadoAtual().X * pbMapa.Width, (float) listaCidades.DadoAtual().Y * pbMapa.Height, 3, 3);
+                Cidade cidade = listaCidades.DadoAtual();
+                g.DrawEllipse(pen, (float) cidade.X * pbMapa.Width - 5, (float) cidade.Y * pbMapa.Height - 5, 10, 10);
+                g.FillEllipse(brush, (float) cidade.X * pbMapa.Width - 4, (float) cidade.Y * pbMapa.Height - 4, 8, 8);
+                g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
                 listaCidades.AvancarPosicao();
             }
         }
