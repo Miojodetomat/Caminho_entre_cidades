@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
 
-// Nome: Hugo Gomes Soares - RA: 22136
-// Nome: Maria Eduarda de Jesus Padovan - RA: 22143
-class Cidade : IComparable<Cidade>, IRegistro<Cidade>
+
+  class Cidade : IComparable<Cidade>, IRegistro<Cidade>
   {
     const int tamNome = 15,
               tamX = 6,
@@ -14,29 +13,22 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
               iniY = iniX + tamX;
 
     string nome;
-    double x, y;
+    int x, y;
 
-    public string Nome   { get => nome; set => nome = value.PadRight(tamNome, ' ').Substring(0, tamNome); }
-    public double X         { get => x; set => x = value; }
-    public double Y         { get => y; set => y = value; }
+    public string Nome   { get => nome; set => nome = value.PadRight(tamCodigo, ' ').Substring(0, tamNome); }
+    public int X         { get => x; set => x = value; }
+    public int Y         { get => y; set => y = value; }
 
-    public Cidade(string nome, double x, double y)
+    public Cidade(string nome, int x, int y)
     {
          Nome = nome;
         X = x;
         Y = y;
     }
 
-    public Cidade() //ver se isso aq ta certo, o construtor sem parametros deve ser como?
-    {
-        Nome = "Nome";
-        X = 0;
-        Y = 0;
-    }
-
     public int CompareTo(Cidade outro)
     {
-        return nome.ToUpperInvariant().CompareTo(outro.nome.ToUpperInvariant());
+        return codigo.ToUpperInvariant().CompareTo(outro.codigo.ToUpperInvariant());
     }
 
     public Cidade LerRegistro(StreamReader arquivo)
@@ -45,8 +37,8 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
       {
         string linha = arquivo.ReadLine();
         Nome = linha.Substring(iniNome, tamNome);
-        X = double.Parse(linha.Substring(iniX, tamX));
-        Y = double.Parse(linha.Substring(iniY));
+        X = int.Parse(linha.Substring(iniX, tamX));
+        Y = int.Parse(linha.Substring(iniY));
         return this; // retorna o próprio objeto Contato, com os dados
       }
       return default(Cidade);

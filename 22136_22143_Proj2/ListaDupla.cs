@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,27 +23,39 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         get => primeiro == null;
     }
 
-    public bool IncluirNoInicio(Dado novoDado) //ver o porque q é bool
+    public bool IncluirNoInicio(Dado novoDado)
     {
         var novoNo = new NoListaDupla<Dado>(novoDado);
-        
-        if (EstaVazio)
-            ultimo = novoNo;
 
-        primeiro.Anterior = novoNo;
-        novoNo.Proximo = primeiro;
-        primeiro = novoNo;
-        quantosNos++;
+        if (EstaVazio)
+        {
+            ultimo = novoNo;
+            primeiro = novoNo;
+            quantosNos++;
+        }
+        else
+            if (primeiro.Info.CompareTo(novoDado) == 0)
+                return false;
+            else
+            {
+                novoNo.Proximo = primeiro;
+                primeiro.Anterior = novoNo;
+                primeiro = novoNo;
+                quantosNos++;
+            }
 
         return true;
     }
 
-    public bool IncluirAposFim(Dado novoDado) //ver o porque que é bool
+    public bool IncluirAposFim(Dado novoDado)
     {
         var novoNo = new NoListaDupla<Dado>(novoDado);
 
         if (EstaVazio)
             primeiro = novoNo;
+        else
+            if (ultimo.Info.CompareTo(novoDado) == 0)
+                return false;
 
         ultimo.Proximo = novoNo;
         novoNo.Anterior = ultimo;
@@ -101,8 +114,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
     { 
        get 
        {
-            int pAtual = 0;
-            Existe(atual.Info, out pAtual);
+            Existe(atual.Info, out int pAtual);
             return pAtual;
        }
 
@@ -166,16 +178,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
                     return IncluirAposFim(novoDado);
                 else
                     if(!Existe(novoDado, out int posicao))
-                    {
-                        var novoNo = new NoListaDupla<Dado>(novoDado);
-                        atual.Anterior.Proximo = novoNo;
-                        novoNo.Anterior = atual.Anterior;
-                        atual.Anterior = novoNo;
-                        novoNo.Proximo = atual;
-                        atual = novoNo;
-                        quantosNos++;
-                        return true;
-                    }
+                        return Incluir(novoDado, posicao);
                     else
                         return false;
         }
@@ -183,8 +186,27 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public bool Incluir(Dado novoDado, int posicaoDeInclusao)
     {
-        PosicionarEm(posicaoDeInclusao);
-        return Incluir(novoDado); //funciona, mas não é o ideal
+        if (posicaoDeInclusao <= 0)
+            return IncluirNoInicio(novoDado);
+        else
+            if (posicaoDeInclusao >= Tamanho)
+                return IncluirAposFim(novoDado);
+        else
+        {
+            PosicionarEm(posicaoDeInclusao);
+            if (atual.Info.CompareTo(novoDado) == 0)
+                return false;
+
+            var novoNo = new NoListaDupla<Dado>(novoDado);
+
+            atual.Anterior.Proximo = novoNo;
+            novoNo.Anterior = atual.Anterior;
+            atual.Anterior = novoNo;
+            novoNo.Proximo = atual;
+            quantosNos++;
+
+            return true;
+        }
     }
 
     public void Ordenar()
@@ -232,7 +254,16 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void PosicionarEm(int posicaoDesejada)
     {
-        throw new NotImplementedException();
+        if (posicaoDesejada < 0 || posicaoDesejada >= Tamanho)
+            throw new Exception("Índice inválido!");
+        if (posicaoDesejada == Tamanho - 1)
+            PosicionarNoUltimo();
+        else
+        {
+            PosicionarNoPrimeiro();
+            for (int i = 0; i != posicaoDesejada; i++)
+                AvancarPosicao();
+        }
     }
 
     public Dado DadoAtual()
@@ -240,7 +271,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return atual.Info;
     }
 
-    public void PercorrerLista()
+    public void PercorrerLista() //tirar
     {
         int i = 0;
         for (atual = primeiro; atual != null; atual = atual.Proximo)
@@ -249,7 +280,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         quantosNos = i;
     }
 
-    public void PercorrerListaAoContrario()
+    public void PercorrerListaAoContrario() //tirar
     {
         int i = 0;
         for (atual = ultimo; atual != null; atual = atual.Anterior)
@@ -260,32 +291,70 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
+        PosicionarNoPrimeiro();
+        while (atual != null)
+        {
+            Console.WriteLine(atual.Info);
+            AvancarPosicao();
+        }
     }
 
     public void ExibirDados(ListBox lista)
     {
-        throw new NotImplementedException();
+        lista.Items.Add("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
+        PosicionarNoPrimeiro();
+        while(atual != null)
+        {
+            lista.Items.Add(atual.Info);
+            AvancarPosicao();
+        }
     }
 
     public void ExibirDados(ComboBox lista)
     {
-        throw new NotImplementedException();
+        lista.Items.Add("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
+        PosicionarNoPrimeiro();
+        while(atual != null)
+        {
+            lista.Items.Add(atual.Info);
+            AvancarPosicao();
+        }
     }
 
     public void ExibirDados(TextBox lista)
     {
-        throw new NotImplementedException();
+        string texto = "Nome".PadRight(15, ' ') + "  X  " + "  Y  \n";
+        PosicionarNoPrimeiro();
+        while(atual != null)
+        {
+            texto += $"{atual.Info}\n";
+            AvancarPosicao();
+        }
+        lista.Text = texto;
     }
 
     public void LerDados(string nomeArquivo)
     {
-        throw new NotImplementedException();
+        StreamReader arq = new StreamReader(nomeArquivo);
+        while(!arq.EndOfStream)
+        {
+            Dado dado = new Dado();
+            this.Incluir(dado.LerRegistro(arq));
+        }
+        arq.Close();
     }
 
     public void GravarDados(string nomeArquivo)
     {
-        throw new NotImplementedException();
+        PosicionarNoPrimeiro();
+        StreamWriter arq = new StreamWriter(nomeArquivo);
+        while(atual != null)
+        {
+            atual.Info.GravarRegistro(arq);
+            AvancarPosicao();
+        }
+        arq.Close();
     }
 
     //criar métodos para:
