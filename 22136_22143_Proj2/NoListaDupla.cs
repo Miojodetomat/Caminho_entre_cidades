@@ -1,5 +1,8 @@
 ﻿using System;
 
+// Nome: Hugo Gomes Soares - RA: 22136
+// Nome: Maria Eduarda de Jesus Padovan - RA: 22143
+
 public class NoListaDupla<Dado> where Dado : IComparable<Dado>, IRegistro<Dado>
 {
     NoListaDupla<Dado> anterior;

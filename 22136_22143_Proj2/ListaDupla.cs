@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// Nome: Hugo Gomes Soares - RA: 22136
+// Nome: Maria Eduarda de Jesus Padovan - RA: 22143
+
 public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRegistro<Dado>, new()
 {
     NoListaDupla<Dado> primeiro, ultimo, atual;
@@ -279,15 +282,6 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return atual.Info;
     }
 
-    public void PercorrerListaAoContrario() //tirar
-    {
-        int i = 0;
-        for (atual = ultimo; atual != null; atual = atual.Anterior)
-            i++;
-
-        quantosNos = i;
-    }
-
     public void ExibirDados()
     {
         Console.WriteLine("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
@@ -357,25 +351,5 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         }
         arq.Close();
     }
-
-    //criar métodos para:
-    //
-    //--Incluir nó antes do primeiro
-    //--Incluir após o ultimo
-    //Pesquisa sequencial ordenada que ajusta ponteiro atual
-    //--Avançar nó atual
-    //--Retroceder nó atual
-    //--Função que informa se a lista está vazia ou não
-    //--Função que informa se o ponteiro atual esta no primeiro ou não
-    //--Função que informa se o ponterio atual está no último
-    //--Remover o no atual (atualizar primeiro ou ultimo se necessario)
-    //--Remover o nó que contem um dado como parametro
-    //--incluir nó em ordem do campo chave dado
-    //ordenar a lista duplamente ligada
-    //--metodo que posiciona ponteiro atual no primeiro
-    //--metodo que posiciona ponteiro atual no ultimo
-    //--metodo que retorna info do nó apontado pelo ponterio atual
-    //--Percorrer a lista do primeiro ao ultimo, usando o ponteiro atual
-    //--Percorrer a lista do ultimo ao primeiro, usando o ponterio atual
 }
 
