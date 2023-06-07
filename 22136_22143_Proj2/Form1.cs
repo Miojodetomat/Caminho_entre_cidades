@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -35,6 +36,7 @@ namespace _22136_22143_Proj2
                     listaCidades.SituacaoAtual = Situacao.navegando;
                     listaCidades.PosicionarNoPrimeiro();
                     AtualizarTela();
+                    lsbArquivo.Items.Add("Nome".PadRight(15, ' ') + " " + "X".PadLeft(6, ' ') + "Y".PadLeft(6, ' '));
                     listaCidades.ExibirDados(lsbArquivo);
                 }
                 catch(Exception)
@@ -74,26 +76,22 @@ namespace _22136_22143_Proj2
                 case Situacao.navegando:
                     {
                         Cidade cidadeAtual = listaCidades.DadoAtual();
-                        btnAnterior.Enabled = true;
-                        btnInicio.Enabled = true;
-                        btnProximo.Enabled = true;
-                        btnUltimo.Enabled = true;
-                        if (listaCidades.EstaNoInicio)
-                        {
-                            btnAnterior.Enabled = false;
-                            btnInicio.Enabled = false;
-                        }
-                        if(listaCidades.EstaNoFim)
-                        {
-                            btnProximo.Enabled = false;
-                            btnUltimo.Enabled = false;
-                        }
+                        TestarBotoes();
                         if (cidadeAtual != null)
                         {
                             txtNome.Text = cidadeAtual.Nome;
                             nudX.Value = (decimal)cidadeAtual.X;
                             nudY.Value = (decimal)cidadeAtual.Y;
+                            stRegistro.Items[0].Text = $"Registro: {listaCidades.PosicaoAtual + 1} / {listaCidades.Tamanho}";
                         }
+                    }
+                    break;
+
+                case Situacao.pesquisando:
+                    {
+                        TestarBotoes();
+                        txtNome.Focus();
+                        stRegistro.Items[0].Text = "Digite o nome da cidade que deseja procurar.";
                     }
                     break;
             }
@@ -120,6 +118,78 @@ namespace _22136_22143_Proj2
         private void btnUltimo_Click(object sender, EventArgs e)
         {
             listaCidades.PosicionarNoUltimo();
+            AtualizarTela();
+        }
+
+        private void btnProcurar_Click(object sender, EventArgs e)
+        {
+            listaCidades.SituacaoAtual = Situacao.pesquisando;
+            AtualizarTela();
+        }
+
+        private void btnSalvar_Click(object sender, EventArgs e)
+        {
+            switch(listaCidades.SituacaoAtual)
+            {
+                case Situacao.pesquisando:
+                    {
+                        if(listaCidades.Existe(new Cidade(txtNome.Text, 0, 0), out int ondeEsta))
+                        {
+                            listaCidades.SituacaoAtual = Situacao.navegando;
+                            AtualizarTela();
+                        }
+                        else
+                        {
+                            MessageBox.Show("A cidade procurada não está registrada!");
+                        }
+                    }
+                    break;
+            }
+        }
+
+        void TestarBotoes()
+        {
+            switch(listaCidades.SituacaoAtual)
+            {
+                case Situacao.navegando:
+                    {
+                        btnAnterior.Enabled = true;
+                        btnInicio.Enabled = true;
+                        btnProximo.Enabled = true;
+                        btnUltimo.Enabled = true;
+                        btnProcurar.Enabled = true;
+                        btnNovo.Enabled = true;
+                        btnSalvar.Enabled = true;
+                        btnExcluir.Enabled = true;
+                        if (listaCidades.EstaNoInicio)
+                        {
+                            btnAnterior.Enabled = false;
+                            btnInicio.Enabled = false;
+                        }
+                        if (listaCidades.EstaNoFim)
+                        {
+                            btnProximo.Enabled = false;
+                            btnUltimo.Enabled = false;
+                        }
+                    }
+                    break;
+
+                case Situacao.pesquisando:
+                    {
+                        btnAnterior.Enabled = false;
+                        btnInicio.Enabled = false;
+                        btnProximo.Enabled = false;
+                        btnUltimo.Enabled = false;
+                        btnNovo.Enabled = false;
+                        btnExcluir.Enabled = false;
+                    }
+                    break;
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            listaCidades.SituacaoAtual = Situacao.navegando;
             AtualizarTela();
         }
     }

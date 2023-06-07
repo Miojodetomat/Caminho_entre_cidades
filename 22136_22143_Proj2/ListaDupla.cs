@@ -284,7 +284,6 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados()
     {
-        Console.WriteLine("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
         PosicionarNoPrimeiro();
         while (atual != null)
         {
@@ -295,7 +294,6 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados(ListBox lista)
     {
-        lista.Items.Add("Nome".PadRight(15, ' ') + " " + "X".PadLeft(6, ' ') + "Y".PadLeft(6, ' '));
         int posicaoAtual = this.PosicaoAtual;
         PosicionarNoPrimeiro();
         while(atual != null)
@@ -308,7 +306,6 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados(ComboBox lista)
     {
-        lista.Items.Add("Nome".PadRight(15, ' ') + "  X  " + "  Y  ");
         PosicionarNoPrimeiro();
         while(atual != null)
         {
@@ -319,7 +316,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados(TextBox lista)
     {
-        string texto = "Nome".PadRight(15, ' ') + "  X  " + "  Y  \n";
+        string texto = "";
         PosicionarNoPrimeiro();
         while(atual != null)
         {

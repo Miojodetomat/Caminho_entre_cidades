@@ -289,6 +289,7 @@
             this.btnProcurar.Size = new System.Drawing.Size(56, 51);
             this.btnProcurar.Text = "Procurar";
             this.btnProcurar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnProcurar.Click += new System.EventHandler(this.btnProcurar_Click);
             // 
             // toolStripSeparator2
             // 
@@ -312,6 +313,7 @@
             this.btnCancelar.Size = new System.Drawing.Size(57, 51);
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // btnSalvar
             // 
@@ -321,6 +323,7 @@
             this.btnSalvar.Size = new System.Drawing.Size(42, 51);
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
             // 
             // toolStripSeparator3
             // 
