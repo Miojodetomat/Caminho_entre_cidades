@@ -99,6 +99,7 @@
             this.pbMapa.TabIndex = 0;
             this.pbMapa.TabStop = false;
             this.pbMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMapa_Paint);
+            this.pbMapa.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbMapa_MouseClick);
             // 
             // groupBox1
             // 
@@ -126,11 +127,11 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lsbArquivo.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lsbArquivo.FormattingEnabled = true;
-            this.lsbArquivo.ItemHeight = 19;
+            this.lsbArquivo.ItemHeight = 23;
             this.lsbArquivo.Location = new System.Drawing.Point(8, 182);
             this.lsbArquivo.Margin = new System.Windows.Forms.Padding(4);
             this.lsbArquivo.Name = "lsbArquivo";
-            this.lsbArquivo.Size = new System.Drawing.Size(313, 118);
+            this.lsbArquivo.Size = new System.Drawing.Size(313, 96);
             this.lsbArquivo.TabIndex = 8;
             // 
             // nudY
@@ -149,7 +150,7 @@
             0,
             0});
             this.nudY.Name = "nudY";
-            this.nudY.Size = new System.Drawing.Size(169, 26);
+            this.nudY.Size = new System.Drawing.Size(169, 30);
             this.nudY.TabIndex = 7;
             // 
             // label4
@@ -158,7 +159,7 @@
             this.label4.Location = new System.Drawing.Point(10, 130);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(116, 20);
+            this.label4.Size = new System.Drawing.Size(145, 25);
             this.label4.TabIndex = 6;
             this.label4.Text = "Coordenada Y:";
             // 
@@ -178,7 +179,7 @@
             0,
             0});
             this.nudX.Name = "nudX";
-            this.nudX.Size = new System.Drawing.Size(169, 26);
+            this.nudX.Size = new System.Drawing.Size(169, 30);
             this.nudX.TabIndex = 5;
             // 
             // label3
@@ -187,7 +188,7 @@
             this.label3.Location = new System.Drawing.Point(10, 84);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 20);
+            this.label3.Size = new System.Drawing.Size(146, 25);
             this.label3.TabIndex = 4;
             this.label3.Text = "Coordenada X:";
             // 
@@ -196,7 +197,7 @@
             this.txtNome.Location = new System.Drawing.Point(156, 32);
             this.txtNome.Margin = new System.Windows.Forms.Padding(4);
             this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(169, 26);
+            this.txtNome.Size = new System.Drawing.Size(169, 30);
             this.txtNome.TabIndex = 3;
             // 
             // label2
@@ -205,7 +206,7 @@
             this.label2.Location = new System.Drawing.Point(10, 35);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 20);
+            this.label2.Size = new System.Drawing.Size(160, 25);
             this.label2.TabIndex = 2;
             this.label2.Text = "Nome da cidade:";
             // 
@@ -232,7 +233,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1170, 54);
+            this.toolStrip1.Size = new System.Drawing.Size(1170, 59);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -241,7 +242,7 @@
             this.btnInicio.Image = ((System.Drawing.Image)(resources.GetObject("btnInicio.Image")));
             this.btnInicio.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnInicio.Name = "btnInicio";
-            this.btnInicio.Size = new System.Drawing.Size(40, 51);
+            this.btnInicio.Size = new System.Drawing.Size(49, 56);
             this.btnInicio.Text = "Início";
             this.btnInicio.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnInicio.Click += new System.EventHandler(this.btnInicio_Click);
@@ -251,7 +252,7 @@
             this.btnAnterior.Image = ((System.Drawing.Image)(resources.GetObject("btnAnterior.Image")));
             this.btnAnterior.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAnterior.Name = "btnAnterior";
-            this.btnAnterior.Size = new System.Drawing.Size(54, 51);
+            this.btnAnterior.Size = new System.Drawing.Size(67, 56);
             this.btnAnterior.Text = "Anterior";
             this.btnAnterior.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
@@ -261,7 +262,7 @@
             this.btnProximo.Image = ((System.Drawing.Image)(resources.GetObject("btnProximo.Image")));
             this.btnProximo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnProximo.Name = "btnProximo";
-            this.btnProximo.Size = new System.Drawing.Size(56, 51);
+            this.btnProximo.Size = new System.Drawing.Size(68, 56);
             this.btnProximo.Text = "Próximo";
             this.btnProximo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnProximo.Click += new System.EventHandler(this.btnProximo_Click);
@@ -271,7 +272,7 @@
             this.btnUltimo.Image = ((System.Drawing.Image)(resources.GetObject("btnUltimo.Image")));
             this.btnUltimo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnUltimo.Name = "btnUltimo";
-            this.btnUltimo.Size = new System.Drawing.Size(47, 51);
+            this.btnUltimo.Size = new System.Drawing.Size(58, 56);
             this.btnUltimo.Text = "Último";
             this.btnUltimo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnUltimo.Click += new System.EventHandler(this.btnUltimo_Click);
@@ -279,14 +280,14 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 59);
             // 
             // btnProcurar
             // 
             this.btnProcurar.Image = ((System.Drawing.Image)(resources.GetObject("btnProcurar.Image")));
             this.btnProcurar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnProcurar.Name = "btnProcurar";
-            this.btnProcurar.Size = new System.Drawing.Size(56, 51);
+            this.btnProcurar.Size = new System.Drawing.Size(68, 56);
             this.btnProcurar.Text = "Procurar";
             this.btnProcurar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnProcurar.Click += new System.EventHandler(this.btnProcurar_Click);
@@ -294,23 +295,24 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 59);
             // 
             // btnNovo
             // 
             this.btnNovo.Image = ((System.Drawing.Image)(resources.GetObject("btnNovo.Image")));
             this.btnNovo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnNovo.Name = "btnNovo";
-            this.btnNovo.Size = new System.Drawing.Size(40, 51);
+            this.btnNovo.Size = new System.Drawing.Size(49, 56);
             this.btnNovo.Text = "Novo";
             this.btnNovo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnNovo.Click += new System.EventHandler(this.btnNovo_Click);
             // 
             // btnCancelar
             // 
             this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
             this.btnCancelar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(57, 51);
+            this.btnCancelar.Size = new System.Drawing.Size(70, 56);
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -320,7 +322,7 @@
             this.btnSalvar.Image = ((System.Drawing.Image)(resources.GetObject("btnSalvar.Image")));
             this.btnSalvar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(42, 51);
+            this.btnSalvar.Size = new System.Drawing.Size(53, 56);
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
@@ -328,33 +330,33 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 59);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 59);
             // 
             // btnExcluir
             // 
             this.btnExcluir.Image = ((System.Drawing.Image)(resources.GetObject("btnExcluir.Image")));
             this.btnExcluir.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnExcluir.Name = "btnExcluir";
-            this.btnExcluir.Size = new System.Drawing.Size(46, 51);
+            this.btnExcluir.Size = new System.Drawing.Size(56, 56);
             this.btnExcluir.Text = "Excluir";
             this.btnExcluir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 59);
             // 
             // btnSair
             // 
             this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
             this.btnSair.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(36, 51);
+            this.btnSair.Size = new System.Drawing.Size(38, 56);
             this.btnSair.Text = "Sair";
             this.btnSair.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
@@ -416,7 +418,7 @@
             this.nudCusto.Location = new System.Drawing.Point(97, 203);
             this.nudCusto.Margin = new System.Windows.Forms.Padding(4);
             this.nudCusto.Name = "nudCusto";
-            this.nudCusto.Size = new System.Drawing.Size(75, 26);
+            this.nudCusto.Size = new System.Drawing.Size(75, 30);
             this.nudCusto.TabIndex = 11;
             // 
             // nudTempo
@@ -424,7 +426,7 @@
             this.nudTempo.Location = new System.Drawing.Point(97, 168);
             this.nudTempo.Margin = new System.Windows.Forms.Padding(4);
             this.nudTempo.Name = "nudTempo";
-            this.nudTempo.Size = new System.Drawing.Size(75, 26);
+            this.nudTempo.Size = new System.Drawing.Size(75, 30);
             this.nudTempo.TabIndex = 10;
             // 
             // nudDistancia
@@ -432,7 +434,7 @@
             this.nudDistancia.Location = new System.Drawing.Point(97, 134);
             this.nudDistancia.Margin = new System.Windows.Forms.Padding(4);
             this.nudDistancia.Name = "nudDistancia";
-            this.nudDistancia.Size = new System.Drawing.Size(75, 26);
+            this.nudDistancia.Size = new System.Drawing.Size(75, 30);
             this.nudDistancia.TabIndex = 9;
             // 
             // label10
@@ -441,7 +443,7 @@
             this.label10.Location = new System.Drawing.Point(10, 203);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(55, 20);
+            this.label10.Size = new System.Drawing.Size(70, 25);
             this.label10.TabIndex = 8;
             this.label10.Text = "Custo:";
             // 
@@ -451,7 +453,7 @@
             this.label9.Location = new System.Drawing.Point(10, 170);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(62, 20);
+            this.label9.Size = new System.Drawing.Size(80, 25);
             this.label9.TabIndex = 7;
             this.label9.Text = "Tempo:";
             // 
@@ -461,7 +463,7 @@
             this.label8.Location = new System.Drawing.Point(10, 136);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(79, 20);
+            this.label8.Size = new System.Drawing.Size(98, 25);
             this.label8.TabIndex = 6;
             this.label8.Text = "Distância:";
             // 
@@ -471,7 +473,7 @@
             this.cbDestino.Location = new System.Drawing.Point(171, 88);
             this.cbDestino.Margin = new System.Windows.Forms.Padding(4);
             this.cbDestino.Name = "cbDestino";
-            this.cbDestino.Size = new System.Drawing.Size(151, 28);
+            this.cbDestino.Size = new System.Drawing.Size(151, 33);
             this.cbDestino.TabIndex = 5;
             // 
             // cbOrigem
@@ -480,7 +482,7 @@
             this.cbOrigem.Location = new System.Drawing.Point(14, 88);
             this.cbOrigem.Margin = new System.Windows.Forms.Padding(4);
             this.cbOrigem.Name = "cbOrigem";
-            this.cbOrigem.Size = new System.Drawing.Size(146, 28);
+            this.cbOrigem.Size = new System.Drawing.Size(146, 33);
             this.cbOrigem.TabIndex = 4;
             // 
             // label7
@@ -489,7 +491,7 @@
             this.label7.Location = new System.Drawing.Point(166, 62);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 20);
+            this.label7.Size = new System.Drawing.Size(84, 25);
             this.label7.TabIndex = 3;
             this.label7.Text = "Destino:";
             // 
@@ -499,7 +501,7 @@
             this.label6.Location = new System.Drawing.Point(9, 62);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 20);
+            this.label6.Size = new System.Drawing.Size(82, 25);
             this.label6.TabIndex = 1;
             this.label6.Text = "Origem:";
             // 
@@ -509,7 +511,7 @@
             this.label5.Location = new System.Drawing.Point(9, 24);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(73, 20);
+            this.label5.Size = new System.Drawing.Size(91, 25);
             this.label5.TabIndex = 0;
             this.label5.Text = "Ligações";
             // 
@@ -519,16 +521,16 @@
             this.stRegistro.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.stRegistro.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.stRegistro.Location = new System.Drawing.Point(0, 665);
+            this.stRegistro.Location = new System.Drawing.Point(0, 661);
             this.stRegistro.Name = "stRegistro";
-            this.stRegistro.Size = new System.Drawing.Size(1170, 22);
+            this.stRegistro.Size = new System.Drawing.Size(1170, 26);
             this.stRegistro.TabIndex = 4;
             this.stRegistro.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(53, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(67, 20);
             this.toolStripStatusLabel1.Text = "Registro:";
             // 
             // dlgAbrir
@@ -537,7 +539,7 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1170, 687);
             this.Controls.Add(this.stRegistro);

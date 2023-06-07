@@ -45,6 +45,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
             }
 
         primeiro = novoNo;
+        atual = primeiro;
         quantosNos++;
 
         return true;
@@ -68,6 +69,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         }
 
         ultimo = novoNo;
+        atual = ultimo;
         quantosNos++;
 
         return true;
@@ -211,6 +213,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
             novoNo.Anterior = atual.Anterior;
             atual.Anterior = novoNo;
             novoNo.Proximo = atual;
+            atual = novoNo;
             quantosNos++;
 
             return true;

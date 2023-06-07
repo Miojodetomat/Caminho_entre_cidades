@@ -91,7 +91,15 @@ namespace _22136_22143_Proj2
                     {
                         TestarBotoes();
                         txtNome.Focus();
-                        stRegistro.Items[0].Text = "Digite o nome da cidade que deseja procurar.";
+                        stRegistro.Items[0].Text = "Mensagem: Digite o nome da cidade que deseja procurar e depois clique em salvar";
+                    }
+                    break;
+
+                case Situacao.incluindo:
+                    {
+                        TestarBotoes();
+                        txtNome.Focus();
+                        stRegistro.Items[0].Text = "Mensagem: Informe o nome da cidade, clique na posição do mapa onde deseja incluir e depois clique em salvar";
                     }
                     break;
             }
@@ -144,6 +152,21 @@ namespace _22136_22143_Proj2
                         }
                     }
                     break;
+
+                case Situacao.incluindo:
+                    {
+                        if(listaCidades.Incluir(new Cidade(txtNome.Text, (double)nudX.Value, (double)nudY.Value)))
+                        {
+                            listaCidades.SituacaoAtual = Situacao.navegando;
+                            AtualizarTela();
+                            pbMapa.Invalidate();
+                        }
+                        else
+                        {
+                            MessageBox.Show("A cidade que deseja incluir já está registrada!");
+                        }
+                    }
+                    break;
             }
         }
 
@@ -184,6 +207,17 @@ namespace _22136_22143_Proj2
                         btnExcluir.Enabled = false;
                     }
                     break;
+
+                case Situacao.incluindo:
+                    {
+                        btnAnterior.Enabled = false;
+                        btnInicio.Enabled = false;
+                        btnProximo.Enabled = false;
+                        btnUltimo.Enabled = false;
+                        btnProcurar.Enabled = false;
+                        btnExcluir.Enabled = false;
+                    }
+                    break;
             }
         }
 
@@ -191,6 +225,22 @@ namespace _22136_22143_Proj2
         {
             listaCidades.SituacaoAtual = Situacao.navegando;
             AtualizarTela();
+        }
+
+        private void btnNovo_Click(object sender, EventArgs e)
+        {
+            listaCidades.SituacaoAtual = Situacao.incluindo;
+            AtualizarTela();
+        }
+
+        private void pbMapa_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(listaCidades.SituacaoAtual == Situacao.incluindo)
+            {
+                //depois ver como mudar cursor para incluir cidades
+                nudX.Value = (decimal) e.X / pbMapa.Width;
+                nudY.Value = (decimal) e.Y / pbMapa.Height;
+            }
         }
     }
 }
