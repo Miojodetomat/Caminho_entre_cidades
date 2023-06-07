@@ -139,6 +139,15 @@ namespace _22136_22143_Proj2
         {
             switch(listaCidades.SituacaoAtual)
             {
+                case Situacao.navegando:
+                    {
+                        if(dlgSalvar.ShowDialog() == DialogResult.OK)
+                        {
+                            listaCidades.GravarDados(dlgSalvar.FileName);
+                        }
+                    }
+                    break;
+
                 case Situacao.pesquisando:
                     {
                         if(listaCidades.Existe(new Cidade(txtNome.Text, 0, 0), out int ondeEsta))
@@ -159,6 +168,7 @@ namespace _22136_22143_Proj2
                         {
                             listaCidades.SituacaoAtual = Situacao.navegando;
                             AtualizarTela();
+                            listaCidades.ExibirDados(lsbArquivo);
                             pbMapa.Invalidate();
                         }
                         else
@@ -241,6 +251,33 @@ namespace _22136_22143_Proj2
                 nudX.Value = (decimal) e.X / pbMapa.Width;
                 nudY.Value = (decimal) e.Y / pbMapa.Height;
             }
+        }
+
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Você deseja excluir esse registro permanentemente?",
+                                "Deseja Excluir?",
+                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                listaCidades.ExcluirAtual();
+                AtualizarTela();
+                listaCidades.ExibirDados(lsbArquivo);
+            }
+        }
+
+        private void btnSair_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Você deseja salvar antes de sair?",
+                "Deseja salvar?",
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                if(dlgSalvar.ShowDialog() == DialogResult.OK)
+                {
+                    listaCidades.GravarDados(dlgSalvar.FileName);
+                }
+            }
+
+            this.Close();
         }
     }
 }

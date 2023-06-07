@@ -72,6 +72,7 @@
             this.stRegistro = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dlgAbrir = new System.Windows.Forms.OpenFileDialog();
+            this.dlgSalvar = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
@@ -345,6 +346,7 @@
             this.btnExcluir.Size = new System.Drawing.Size(56, 56);
             this.btnExcluir.Text = "Excluir";
             this.btnExcluir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
             // 
             // toolStripSeparator5
             // 
@@ -359,6 +361,7 @@
             this.btnSair.Size = new System.Drawing.Size(38, 56);
             this.btnSair.Text = "Sair";
             this.btnSair.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
             // groupBox2
             // 
@@ -617,6 +620,7 @@
         private System.Windows.Forms.StatusStrip stRegistro;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.OpenFileDialog dlgAbrir;
+        private System.Windows.Forms.SaveFileDialog dlgSalvar;
     }
 }
 

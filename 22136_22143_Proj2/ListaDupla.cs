@@ -154,11 +154,20 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         {
             if (EstaNoInicio)
                 primeiro = atual.Proximo;
+            else
+                atual.Anterior.Proximo = atual.Proximo;
+
             if (EstaNoFim)
+            {
                 ultimo = atual.Anterior;
-            atual.Anterior.Proximo = atual.Proximo;
-            atual.Proximo.Anterior = atual.Anterior;
-            atual = atual.Proximo;
+                atual = ultimo;
+            }
+            else
+            {
+                atual.Proximo.Anterior = atual.Anterior;
+                atual = atual.Proximo;
+            }
+
             quantosNos--;
             return true;
         }
