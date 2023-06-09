@@ -16,17 +16,22 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
     Situacao situacaoAtual;
     int quantosNos;
 
+    // construtor
     public ListaDupla()
     {
         primeiro = ultimo = atual = null;
         quantosNos = 0;
     }
 
+    // para estar vazio o primeiro nó não pode existir
     public bool EstaVazio
     {
         get => primeiro == null;
     }
 
+    // para incluir o nó no início é preciso que aquele
+    // que antes era o primeiro passe a referenciar o novoNo e
+    // o novoNo passe a apontar aquele que antes era o primeiro
     public bool IncluirNoInicio(Dado novoDado)
     {
         var novoNo = new NoListaDupla<Dado>(novoDado);
@@ -51,6 +56,9 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return true;
     }
 
+    // para incluir após o fim, é parecido com o incluir no início
+    // aquele que antes era o último passa a referenciar o novoNo e
+    // o novoNo passa a apontar aquele que antes era o último
     public bool IncluirAposFim(Dado novoDado)
     {
         var novoNo = new NoListaDupla<Dado>(novoDado);
@@ -75,6 +83,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return true;
     }
 
+    // verifica se existe um dado e onde está esse dado
     public bool Existe(Dado dadoProcurado, out int ondeEsta)
     {
         ondeEsta = 0;
@@ -82,6 +91,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
             return false;
 
         atual = primeiro;
+
         while(atual != null)
         {
             if (atual.Info.CompareTo(dadoProcurado) == 0)
@@ -119,7 +129,9 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
     {
         get => atual == ultimo;
     }
+
     public Situacao SituacaoAtual { get => situacaoAtual ; set => situacaoAtual = value; }
+
     public int PosicaoAtual 
     { 
        get 
@@ -148,6 +160,8 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         }
     }
 
+    // exclui o dado de acordo com onde ele está
+    // (se está no início ou no fim)
     public bool ExcluirAtual()
     {
         if (!EstaVazio)
@@ -174,9 +188,10 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return false;
     }
 
+    // exclui o dado passado como parâmetro
     public bool Excluir(Dado dadoAExcluir)
     {
-        if(Existe(dadoAExcluir, out int posicao))
+        if (Existe(dadoAExcluir, out int posicao))
         {
             return ExcluirAtual();
         }
@@ -184,6 +199,9 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return false;
     }
 
+    // inclui de acordo com a ordem a ser seguidapelos dados
+    // sempre comparando com o próximo dado da lista para saber
+    // a posição em que deve ser colocado
     public bool Incluir(Dado novoDado)
     {
         if (EstaVazio)
@@ -203,6 +221,8 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         }
     }
 
+    // verifica a posição de inclusão para poder incluir o dado
+    // passado como parâmetro de forma adequada
     public bool Incluir(Dado novoDado, int posicaoDeInclusao)
     {
         if (posicaoDeInclusao <= 0)
@@ -229,22 +249,26 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         }
     }
 
+    // ordena de acordo com o padrão a ser seguido pela lista
     public void Ordenar()
     {
         var listaOrdenada = new ListaDupla<Dado>();
+
         while(!this.EstaVazio)
         {
             NoListaDupla<Dado> oMenor = this.primeiro;
-            for(this.atual=this.primeiro;this.atual!=null;this.atual=this.atual.Proximo)
+
+            for (this.atual=this.primeiro;this.atual!=null;this.atual=this.atual.Proximo)
             {
                 if (this.atual.Info.CompareTo(oMenor.Info) < 0)
                     oMenor = this.atual;
             }
-            if(oMenor.Anterior == null)
+
+            if (oMenor.Anterior == null)
             {
                 this.primeiro = this.primeiro.Proximo;
             }
-            if(oMenor.Proximo == null)
+            if (oMenor.Proximo == null)
             {
                 this.ultimo = this.ultimo.Anterior;
             }
@@ -294,6 +318,9 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         return atual.Info;
     }
 
+    // os quatro métodos a seguir exibem dados de acordo
+    // com ONDE esses dados serão exibidos: somente retornando
+    // a informação, listbox, combox ou textbox
     public void ExibirDados()
     {
         PosicionarNoPrimeiro();
@@ -338,6 +365,8 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         lista.Text = texto;
     }
 
+    // le os dados do arquivo inserido pelo usuário no
+    // início do programa
     public void LerDados(string nomeArquivo)
     {
         StreamReader arq = new StreamReader(nomeArquivo);
@@ -349,6 +378,8 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         arq.Close();
     }
 
+    // grava os dados das alterações feitas no arquivo
+    // inserido pelo usuário no início do programa
     public void GravarDados(string nomeArquivo)
     {
         PosicionarNoPrimeiro();

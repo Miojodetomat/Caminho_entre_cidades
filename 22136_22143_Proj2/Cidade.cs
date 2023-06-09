@@ -27,7 +27,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
         Y = y;
     }
 
-    public Cidade() //ver se isso aq ta certo, o construtor sem parametros deve ser como?
+    public Cidade()
     {
         Nome = "Nome";
         X = 0;

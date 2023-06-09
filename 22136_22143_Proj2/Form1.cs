@@ -14,6 +14,7 @@ namespace _22136_22143_Proj2
 {
     // Nome: Hugo Gomes Soares - RA: 22136
     // Nome: Maria Eduarda de Jesus Padovan - RA: 22143
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -23,6 +24,8 @@ namespace _22136_22143_Proj2
 
         ListaDupla<Cidade> listaCidades;
 
+        // quando o formulário for carregado, será feita a leitura
+        // dos arquivos necessários para o programa funcionar
         private void Form1_Load(object sender, EventArgs e)
         {
             if(dlgAbrir.ShowDialog() == DialogResult.OK)
@@ -46,6 +49,9 @@ namespace _22136_22143_Proj2
             }
         }
 
+        // no picturebox, assim que o arquivo solicitado for aberto
+        // serão desenhadas as cidades descritas no mesmo (sobrescrevendo
+        // a imagem do mapa)
         private void pbMapa_Paint(object sender, PaintEventArgs e)
         {
             if (listaCidades != null)
@@ -55,8 +61,10 @@ namespace _22136_22143_Proj2
                 Brush brush = new SolidBrush(Color.LightGray);
                 Brush brush2 = new SolidBrush(Color.Black);
                 Font fonte = new Font("Arial", 10);
+
                 int posicaoAtual = listaCidades.PosicaoAtual;
                 listaCidades.PosicionarNoPrimeiro();
+
                 while (listaCidades.DadoAtual() != null)
                 {
                     Cidade cidade = listaCidades.DadoAtual();
@@ -69,6 +77,9 @@ namespace _22136_22143_Proj2
             }
         }
 
+        // atualiza a tela de acordo com a dituação em que o usuário definindo como os botões
+        // ficarão (por meio do método TestarBotoes, a mensagem que aparecerá no statusStrip para
+        // auxiliar o usuário e os campos que precisarão ser limpos para que o usuário digite
         void AtualizarTela()
         {
             switch(listaCidades.SituacaoAtual)
@@ -77,6 +88,7 @@ namespace _22136_22143_Proj2
                     {
                         Cidade cidadeAtual = listaCidades.DadoAtual();
                         TestarBotoes();
+
                         if (cidadeAtual != null)
                         {
                             txtNome.Text = cidadeAtual.Nome;
@@ -90,6 +102,11 @@ namespace _22136_22143_Proj2
                 case Situacao.pesquisando:
                     {
                         TestarBotoes();
+
+                        txtNome.Text = "";
+                        nudX.Value = 0;
+                        nudY.Value = 0;
+
                         txtNome.Focus();
                         stRegistro.Items[0].Text = "Mensagem: Digite o nome da cidade que deseja procurar e depois clique em salvar";
                     }
@@ -98,6 +115,11 @@ namespace _22136_22143_Proj2
                 case Situacao.incluindo:
                     {
                         TestarBotoes();
+
+                        txtNome.Text = "";
+                        nudX.Value = 0;
+                        nudY.Value = 0;
+
                         txtNome.Focus();
                         stRegistro.Items[0].Text = "Mensagem: Informe o nome da cidade, clique na posição do mapa onde deseja incluir e depois clique em salvar";
                     }
@@ -105,6 +127,64 @@ namespace _22136_22143_Proj2
             }
         }
 
+        // indica quais botões poderão ser habilitados de acordo
+        // coma situação em que o usuário se encontra no programa
+        void TestarBotoes()
+        {
+            switch (listaCidades.SituacaoAtual)
+            {
+                case Situacao.navegando:
+                    {
+                        btnAnterior.Enabled = true;
+                        btnInicio.Enabled   = true;
+                        btnProximo.Enabled  = true;
+                        btnUltimo.Enabled   = true;
+                        btnProcurar.Enabled = true;
+                        btnNovo.Enabled     = true;
+                        btnSalvar.Enabled   = true;
+                        btnExcluir.Enabled  = true;
+
+                        if (listaCidades.EstaNoInicio)
+                        {
+                            btnAnterior.Enabled = false;
+                            btnInicio.Enabled   = false;
+                        }
+
+                        if (listaCidades.EstaNoFim)
+                        {
+                            btnProximo.Enabled = false;
+                            btnUltimo.Enabled  = false;
+                        }
+                    }
+                    break;
+
+                case Situacao.pesquisando:
+                    {
+                        btnAnterior.Enabled  = false;
+                        btnInicio.Enabled    = false;
+                        btnProximo.Enabled   = false;
+                        btnUltimo.Enabled    = false;
+                        btnNovo.Enabled      = false;
+                        btnExcluir.Enabled   = false;
+                    }
+                    break;
+
+                case Situacao.incluindo:
+                    {
+                        btnAnterior.Enabled = false;
+                        btnInicio.Enabled   = false;
+                        btnProximo.Enabled  = false;
+                        btnUltimo.Enabled   = false;
+                        btnProcurar.Enabled = false;
+                        btnExcluir.Enabled  = false;
+                    }
+                    break;
+            }
+        }
+
+        // a partir daqui, o que será apresentado no código é o que cada
+        // botão faz ao ser clicado pelo usuário, cada um realizando as suas
+        // respectivas funções
         private void btnProximo_Click(object sender, EventArgs e)
         {
             listaCidades.AvancarPosicao();
@@ -141,7 +221,8 @@ namespace _22136_22143_Proj2
             {
                 case Situacao.navegando:
                     {
-                        if(dlgSalvar.ShowDialog() == DialogResult.OK)
+                        // mostrará a tela para que o usuário salve o arquivo
+                        if (dlgSalvar.ShowDialog() == DialogResult.OK)
                         {
                             listaCidades.GravarDados(dlgSalvar.FileName);
                         }
@@ -150,7 +231,10 @@ namespace _22136_22143_Proj2
 
                 case Situacao.pesquisando:
                     {
-                        if(listaCidades.Existe(new Cidade(txtNome.Text, 0, 0), out int ondeEsta))
+                        // se a situação for pesquisando, será preciso ver se aquela cidade existe
+                        // para que quando o usuário clique no botão de salvar, as respectivas informações
+                        // daquela cidade apareçam nos devidos campos
+                        if (listaCidades.Existe(new Cidade(txtNome.Text, 0, 0), out int ondeEsta))
                         {
                             listaCidades.SituacaoAtual = Situacao.navegando;
                             AtualizarTela();
@@ -164,7 +248,9 @@ namespace _22136_22143_Proj2
 
                 case Situacao.incluindo:
                     {
-                        if(listaCidades.Incluir(new Cidade(txtNome.Text, (double)nudX.Value, (double)nudY.Value)))
+                        // se a situação for de inclusão, incluirei uma nova cidade com as informações digitadas 
+                        // nos devidos campos pelo usuário
+                        if (listaCidades.Incluir(new Cidade(txtNome.Text, (double)nudX.Value, (double)nudY.Value)))
                         {
                             listaCidades.SituacaoAtual = Situacao.navegando;
                             AtualizarTela();
@@ -175,57 +261,6 @@ namespace _22136_22143_Proj2
                         {
                             MessageBox.Show("A cidade que deseja incluir já está registrada!");
                         }
-                    }
-                    break;
-            }
-        }
-
-        void TestarBotoes()
-        {
-            switch(listaCidades.SituacaoAtual)
-            {
-                case Situacao.navegando:
-                    {
-                        btnAnterior.Enabled = true;
-                        btnInicio.Enabled = true;
-                        btnProximo.Enabled = true;
-                        btnUltimo.Enabled = true;
-                        btnProcurar.Enabled = true;
-                        btnNovo.Enabled = true;
-                        btnSalvar.Enabled = true;
-                        btnExcluir.Enabled = true;
-                        if (listaCidades.EstaNoInicio)
-                        {
-                            btnAnterior.Enabled = false;
-                            btnInicio.Enabled = false;
-                        }
-                        if (listaCidades.EstaNoFim)
-                        {
-                            btnProximo.Enabled = false;
-                            btnUltimo.Enabled = false;
-                        }
-                    }
-                    break;
-
-                case Situacao.pesquisando:
-                    {
-                        btnAnterior.Enabled = false;
-                        btnInicio.Enabled = false;
-                        btnProximo.Enabled = false;
-                        btnUltimo.Enabled = false;
-                        btnNovo.Enabled = false;
-                        btnExcluir.Enabled = false;
-                    }
-                    break;
-
-                case Situacao.incluindo:
-                    {
-                        btnAnterior.Enabled = false;
-                        btnInicio.Enabled = false;
-                        btnProximo.Enabled = false;
-                        btnUltimo.Enabled = false;
-                        btnProcurar.Enabled = false;
-                        btnExcluir.Enabled = false;
                     }
                     break;
             }
@@ -245,7 +280,7 @@ namespace _22136_22143_Proj2
 
         private void pbMapa_MouseClick(object sender, MouseEventArgs e)
         {
-            if(listaCidades.SituacaoAtual == Situacao.incluindo)
+            if (listaCidades.SituacaoAtual == Situacao.incluindo)
             {
                 //depois ver como mudar cursor para incluir cidades
                 nudX.Value = (decimal) e.X / pbMapa.Width;
@@ -259,19 +294,24 @@ namespace _22136_22143_Proj2
                                 "Deseja Excluir?",
                                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+                listaCidades.SituacaoAtual = Situacao.excluindo;
                 listaCidades.ExcluirAtual();
+                listaCidades.SituacaoAtual = Situacao.navegando;
                 AtualizarTela();
+                pbMapa.Invalidate();
                 listaCidades.ExibirDados(lsbArquivo);
             }
         }
 
+        // não permitir que o usuário saia do programa sem salvar as alterações que
+        // o mesmo fez em seu arquivo durante a utilização do programa
         private void btnSair_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("Você deseja salvar antes de sair?",
-                "Deseja salvar?",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Você deseja salvar antes de sair?",
+                                "Deseja salvar?",
+                                MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                if(dlgSalvar.ShowDialog() == DialogResult.OK)
+                if (dlgSalvar.ShowDialog() == DialogResult.OK)
                 {
                     listaCidades.GravarDados(dlgSalvar.FileName);
                 }
