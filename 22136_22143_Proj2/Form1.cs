@@ -77,7 +77,7 @@ namespace _22136_22143_Proj2
             }
         }
 
-        // atualiza a tela de acordo com a dituação em que o usuário definindo como os botões
+        // atualiza a tela de acordo com a situação em que o usuário está definindo como os botões
         // ficarão (por meio do método TestarBotoes, a mensagem que aparecerá no statusStrip para
         // auxiliar o usuário e os campos que precisarão ser limpos para que o usuário digite
         void AtualizarTela()
