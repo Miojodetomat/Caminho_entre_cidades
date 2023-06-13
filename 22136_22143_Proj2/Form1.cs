@@ -23,6 +23,7 @@ namespace _22136_22143_Proj2
         }
 
         ListaDupla<Cidade> listaCidades;
+        Cidade[] cidades;
 
         // quando o formulário for carregado, será feita a leitura
         // dos arquivos necessários para o programa funcionar
@@ -34,6 +35,16 @@ namespace _22136_22143_Proj2
                 {
                     listaCidades = new ListaDupla<Cidade>();
                     listaCidades.LerDados(dlgAbrir.FileName);
+
+                    // Parte II - Backtracking ///////////////////////////////////
+                    //Tenho que ver onde que eu vou pedir pro usuário selecionar os arquivos referentes ao backtracking
+                    cidades = new Cidade[listaCidades.Tamanho];
+                    for(int i = 0; i < listaCidades.Tamanho; i++)
+                    {
+                        cidades[i] = listaCidades[i];
+                    }
+                    //////////////////////////////////////////////////////////////
+
                     pbMapa.Invalidate();
 
                     listaCidades.SituacaoAtual = Situacao.navegando;
@@ -221,11 +232,8 @@ namespace _22136_22143_Proj2
             {
                 case Situacao.navegando:
                     {
-                        // mostrará a tela para que o usuário salve o arquivo
-                        if (dlgSalvar.ShowDialog() == DialogResult.OK)
-                        {
-                            listaCidades.GravarDados(dlgSalvar.FileName);
-                        }
+                        //Chama o método que executa a operação de salvar em arquivo .txt
+                        Salvar();
                     }
                     break;
 
@@ -250,10 +258,11 @@ namespace _22136_22143_Proj2
                     {
                         // se a situação for de inclusão, incluirei uma nova cidade com as informações digitadas 
                         // nos devidos campos pelo usuário
-                        if (listaCidades.Incluir(new Cidade(txtNome.Text, (double)nudX.Value, (double)nudY.Value)))
+                        if (listaCidades.Incluir(new Cidade(txtNome.Text, (double)Math.Round(nudX.Value, 3), (double)Math.Round(nudY.Value, 3))))
                         {
                             listaCidades.SituacaoAtual = Situacao.navegando;
                             AtualizarTela();
+                            lsbArquivo.Items.Clear();
                             listaCidades.ExibirDados(lsbArquivo);
                             pbMapa.Invalidate();
                         }
@@ -292,13 +301,14 @@ namespace _22136_22143_Proj2
         {
             if(MessageBox.Show("Você deseja excluir esse registro permanentemente?",
                                 "Deseja Excluir?",
-                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 listaCidades.SituacaoAtual = Situacao.excluindo;
                 listaCidades.ExcluirAtual();
                 listaCidades.SituacaoAtual = Situacao.navegando;
                 AtualizarTela();
                 pbMapa.Invalidate();
+                lsbArquivo.Items.Clear();
                 listaCidades.ExibirDados(lsbArquivo);
             }
         }
@@ -307,17 +317,32 @@ namespace _22136_22143_Proj2
         // o mesmo fez em seu arquivo durante a utilização do programa
         private void btnSair_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("Você deseja realmente encerrar a execução do programa?",
+                                "Deseja sair?",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
             if (MessageBox.Show("Você deseja salvar antes de sair?",
                                 "Deseja salvar?",
-                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (dlgSalvar.ShowDialog() == DialogResult.OK)
-                {
-                    listaCidades.GravarDados(dlgSalvar.FileName);
-                }
+                Salvar();
             }
+        }
 
-            this.Close();
+        void Salvar()
+        {
+            // mostrará a tela para que o usuário salve o arquivo
+            if (dlgSalvar.ShowDialog() == DialogResult.OK)
+            {
+                //gravará os dados armazenados na lista dupla no arquivo fornecido pelo usuário 
+                listaCidades.GravarDados(dlgSalvar.FileName);
+            }
         }
     }
 }

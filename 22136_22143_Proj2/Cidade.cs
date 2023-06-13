@@ -61,7 +61,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
     }
     public string ParaArquivo()
     {
-      return Nome + X.ToString() + Y.ToString();
+      return Nome + X.ToString().PadRight(tamX, '0') + Y.ToString().PadRight(tamY, '0');
     }
 
     public override string ToString()

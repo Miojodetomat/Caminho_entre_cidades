@@ -11,7 +11,7 @@ Cartagena       0,666 0,751
 Castelo Branco  0,252 0,524
 Coimbra         0,193 0,485
 Cordoba         0,425 0,721
-El Ejido        0,55 0,832
+El Ejido        0,550 0,832
 Gijon           0,369 0,131
 Girona          0,907 0,299
 Granada         0,498 0,791
@@ -28,21 +28,21 @@ Loule           0,218 0,796
 Lugo            0,248 0,192
 Madrid          0,492 0,462
 Malaga          0,446 0,837
-Mataro          0,882 0,35
+Mataro          0,882 0,350
 Montpellier     0,976 0,126
-Murcia          0,655 0,71
+Murcia          0,655 0,710
 Ourense         0,229 0,261
 Oviedo          0,356 0,152
 Pau             0,703 0,159
 Perpignan       0,911 0,223
 Pombal          0,179 0,517
-Ponferrada      0,31 0,24
-Porto           0,18 0,388
+Ponferrada      0,310 0,240
+Porto           0,180 0,388
 Salamanca       0,368 0,407
 San Sebastian   0,601 0,156
 Santander       0,487 0,141
 Santiago de C.  0,185 0,206
-Sevilha         0,347 0,77
+Sevilha         0,347 0,770
 Tarragona       0,806 0,391
 Toledo          0,471 0,521
 Toulouse        0,817 0,126

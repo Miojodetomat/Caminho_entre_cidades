@@ -90,6 +90,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
         if (EstaVazio)
             return false;
 
+        var infoAtual = atual.Info;
         atual = primeiro;
 
         while(atual != null)
@@ -104,9 +105,12 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
                 }
                 else
                     if (atual.Info.CompareTo(dadoProcurado) > 0)
-                        return false;
+                       break;
+                   
         }
 
+        Existe(infoAtual, out int pAtual);
+        PosicionarEm(pAtual);
         return false;
     }
 
@@ -323,12 +327,14 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
     // a informação, listbox, combox ou textbox
     public void ExibirDados()
     {
+        int posicaoAtual = this.PosicaoAtual;
         PosicionarNoPrimeiro();
         while (atual != null)
         {
             Console.WriteLine(atual.Info);
             AvancarPosicao();
         }
+        PosicionarEm(posicaoAtual);
     }
 
     public void ExibirDados(ListBox lista)
@@ -345,16 +351,19 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
 
     public void ExibirDados(ComboBox lista)
     {
+        int posicaoAtual = this.PosicaoAtual;
         PosicionarNoPrimeiro();
         while(atual != null)
         {
             lista.Items.Add(atual.Info);
             AvancarPosicao();
         }
+        PosicionarEm(posicaoAtual);
     }
 
     public void ExibirDados(TextBox lista)
     {
+        int posicaoAtual = this.PosicaoAtual;
         string texto = "";
         PosicionarNoPrimeiro();
         while(atual != null)
@@ -363,6 +372,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
             AvancarPosicao();
         }
         lista.Text = texto;
+        PosicionarEm(posicaoAtual);
     }
 
     // le os dados do arquivo inserido pelo usuário no
@@ -382,6 +392,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
     // inserido pelo usuário no início do programa
     public void GravarDados(string nomeArquivo)
     {
+        int posicaoAtual = this.PosicaoAtual;
         PosicionarNoPrimeiro();
         StreamWriter arq = new StreamWriter(nomeArquivo);
         while(atual != null)
@@ -390,6 +401,7 @@ public class ListaDupla<Dado> : IDados<Dado> where Dado : IComparable<Dado>, IRe
             AvancarPosicao();
         }
         arq.Close();
+        PosicionarEm(posicaoAtual);
     }
 }
 
