@@ -3,18 +3,16 @@ using System.IO;
 
 // Nome: Hugo Gomes Soares - RA: 22136
 // Nome: Maria Eduarda de Jesus Padovan - RA: 22143
-internal class Ligacao
+internal class Ligacao : IComparable<Ligacao>, IRegistro<Ligacao>
 {
-  const int tamCodigo = 3,
-        tamDistancia = 5,
-        tamTempo = 4,
-        tamCusto = 5;
+  const int tamCodigo = 15,
+        tamDistancia = 4,
+        tamCusto = 4;
 
-  const int iniCodigoOrigem = 0,
-            iniCodigoDestino = iniCodigoOrigem + tamCodigo,
-            iniDistancia = iniCodigoDestino + tamCodigo,
-            iniTempo = iniDistancia + tamDistancia,
-            iniCusto = iniTempo + tamTempo;
+    const int iniCodigoOrigem = 0,
+              iniCodigoDestino = iniCodigoOrigem + tamCodigo,
+              iniDistancia = iniCodigoDestino + tamCodigo,
+              iniCusto = iniDistancia + tamDistancia;
 
 
   string idCidadeOrigem, idCidadeDestino;
@@ -28,6 +26,15 @@ internal class Ligacao
     this.tempo = tempo;
     this.custo = custo;
   }
+
+    public Ligacao()
+    {
+        this.idCidadeDestino = "";
+        this.idCidadeOrigem = "";
+        this.tempo = 0;
+        this.custo = 0;
+        this.distancia = 0;
+    }
 
   public string IdCidadeOrigem { get => idCidadeOrigem; set => idCidadeOrigem = value; }
   public string IdCidadeDestino { get => idCidadeDestino; set => idCidadeDestino = value; }
@@ -49,7 +56,6 @@ internal class Ligacao
       IdCidadeOrigem = linha.Substring(iniCodigoOrigem, tamCodigo);
       IdCidadeDestino = linha.Substring(iniCodigoDestino, tamCodigo);
       Distancia = int.Parse(linha.Substring(iniDistancia, tamDistancia));
-      Tempo = int.Parse(linha.Substring(iniTempo, tamTempo));
       Custo = int.Parse(linha.Substring(iniCusto, tamCusto));
       return this; // retorna o próprio objeto Contato, com os dados
     }

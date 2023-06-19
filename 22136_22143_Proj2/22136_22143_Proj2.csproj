@@ -55,9 +55,12 @@
     </Compile>
     <Compile Include="IDados.cs" />
     <Compile Include="IRegistro.cs" />
+    <Compile Include="IStack.cs" />
     <Compile Include="Ligacao.cs" />
     <Compile Include="ListaDupla.cs" />
     <Compile Include="NoListaDupla.cs" />
+    <Compile Include="PilhaVaziaException.cs" />
+    <Compile Include="PilhaVetor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

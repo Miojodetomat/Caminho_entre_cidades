@@ -71,12 +71,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.PassandoPor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.caminho1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -85,6 +83,8 @@
             this.caminho6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
@@ -96,8 +96,8 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // pbMapa
@@ -367,6 +367,7 @@
             this.btnAcharCaminho.TabIndex = 12;
             this.btnAcharCaminho.Text = "Achar Caminho";
             this.btnAcharCaminho.UseVisualStyleBackColor = true;
+            this.btnAcharCaminho.Click += new System.EventHandler(this.btnAcharCaminho_Click);
             // 
             // nudCusto
             // 
@@ -532,6 +533,30 @@
             this.tabPage2.Text = "Busca";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.PassandoPor});
+            this.dataGridView2.Location = new System.Drawing.Point(126, 189);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(194, 264);
+            this.dataGridView2.TabIndex = 15;
+            // 
+            // PassandoPor
+            // 
+            this.PassandoPor.HeaderText = "Passando Por";
+            this.PassandoPor.Name = "PassandoPor";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(125, 166);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(195, 20);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Melhor caminho (yyyyy km)";
+            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -548,48 +573,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(622, 105);
             this.dataGridView1.TabIndex = 6;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(176, 557);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(177, 20);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Caminhos encontrados:";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(43, 593);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(305, 20);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "Km do caminho selecionado: (XXXXX km)";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(125, 166);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(195, 20);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Melhor caminho (yyyyy km)";
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.PassandoPor});
-            this.dataGridView2.Location = new System.Drawing.Point(126, 189);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(194, 264);
-            this.dataGridView2.TabIndex = 15;
-            // 
-            // PassandoPor
-            // 
-            this.PassandoPor.HeaderText = "Passando Por";
-            this.PassandoPor.Name = "PassandoPor";
             // 
             // caminho1
             // 
@@ -631,6 +614,24 @@
             this.caminho8.HeaderText = "8a";
             this.caminho8.Name = "caminho8";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(176, 557);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(177, 20);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Caminhos encontrados:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(43, 593);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(305, 20);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "Km do caminho selecionado: (XXXXX km)";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -665,8 +666,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

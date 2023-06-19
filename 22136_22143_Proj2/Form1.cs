@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,28 +23,29 @@ namespace _22136_22143_Proj2
             InitializeComponent();
         }
 
+        ListaDupla<Ligacao> listaLigacoes;
         ListaDupla<Cidade> listaCidades;
         Cidade[] cidades;
+        Ligacao[,] matrizDeAdjacencia;
 
         // quando o formulário for carregado, será feita a leitura
         // dos arquivos necessários para o programa funcionar
         private void Form1_Load(object sender, EventArgs e)
         {
-            if(dlgAbrir.ShowDialog() == DialogResult.OK)
+            if (dlgAbrir.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
                     listaCidades = new ListaDupla<Cidade>();
                     listaCidades.LerDados(dlgAbrir.FileName);
 
-                    // Parte II - Backtracking ///////////////////////////////////
-                    //Tenho que ver onde que eu vou pedir pro usuário selecionar os arquivos referentes ao backtracking
                     cidades = new Cidade[listaCidades.Tamanho];
-                    for(int i = 0; i < listaCidades.Tamanho; i++)
+                    for (int i = 0; i < listaCidades.Tamanho; i++)
                     {
                         cidades[i] = listaCidades[i];
                     }
-                    //////////////////////////////////////////////////////////////
+
+                    matrizDeAdjacencia = new Ligacao[cidades.Length, cidades.Length];
 
                     pbMapa.Invalidate();
 
@@ -52,12 +54,48 @@ namespace _22136_22143_Proj2
                     AtualizarTela();
                     lsbArquivo.Items.Add("Nome".PadRight(15, ' ') + " " + "X".PadLeft(6, ' ') + "Y".PadLeft(6, ' '));
                     listaCidades.ExibirDados(lsbArquivo);
+
+                    if (dlgAbrir.ShowDialog() == DialogResult.OK)
+                    {
+                        listaLigacoes = new ListaDupla<Ligacao>();
+                        listaLigacoes.LerDados(dlgAbrir.FileName);
+
+                        for (int i = 0; i < cidades.Length; i++)
+                        {
+                            for (int j = 0; j < cidades.Length; j++)
+                            {
+                                matrizDeAdjacencia[i, j] = new Ligacao();
+                            }
+                        }
+
+                        listaLigacoes.PosicionarNoPrimeiro();
+                        while (listaLigacoes.DadoAtual() != null)
+                        {
+                            int indiceOrigem = indiceDaCidade(listaLigacoes.DadoAtual().IdCidadeOrigem);
+                            int indiceDestino = indiceDaCidade(listaLigacoes.DadoAtual().IdCidadeDestino);
+                            matrizDeAdjacencia[indiceOrigem, indiceDestino] = listaLigacoes.DadoAtual();
+                            matrizDeAdjacencia[indiceDestino, indiceOrigem] = listaLigacoes.DadoAtual();
+
+                            listaLigacoes.AvancarPosicao();
+                        }
+                    }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     MessageBox.Show("Erro de leitura no arquivo.");
                 }
             }
+        }
+
+        int indiceDaCidade(string cidade)
+        {
+            for (int i = 0; i < cidades.Length; i++)
+            {
+                if (cidades[i].Nome == cidade)
+                    return i;
+            }
+
+            throw new Exception("Cidade não está no vetor");
         }
 
         // no picturebox, assim que o arquivo solicitado for aberto
@@ -79,12 +117,32 @@ namespace _22136_22143_Proj2
                 while (listaCidades.DadoAtual() != null)
                 {
                     Cidade cidade = listaCidades.DadoAtual();
-                    g.DrawEllipse(pen, (float)cidade.X * pbMapa.Width - 5, (float)cidade.Y * pbMapa.Height - 5, 10, 10);
-                    g.FillEllipse(brush, (float)cidade.X * pbMapa.Width - 4, (float)cidade.Y * pbMapa.Height - 4, 8, 8);
-                    g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
+                    if (listaCidades.PosicaoAtual == posicaoAtual)
+                    {
+                        Pen penAtual = new Pen(Color.Black, 2);
+                        Brush brushAtual = new SolidBrush(Color.Yellow);
+                        g.DrawEllipse(penAtual, (float)cidade.X * pbMapa.Width - 5, (float)cidade.Y * pbMapa.Height - 5, 10, 10);
+                        g.FillEllipse(brushAtual, (float)cidade.X * pbMapa.Width - 4, (float)cidade.Y * pbMapa.Height - 4, 8, 8);
+                        g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
+                    }
+                    else
+                    {
+                        g.DrawEllipse(pen, (float)cidade.X * pbMapa.Width - 5, (float)cidade.Y * pbMapa.Height - 5, 10, 10);
+                        g.FillEllipse(brush, (float)cidade.X * pbMapa.Width - 4, (float)cidade.Y * pbMapa.Height - 4, 8, 8);
+                        g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
+                    }
                     listaCidades.AvancarPosicao();
                 }
                 listaCidades.PosicionarEm(posicaoAtual);
+
+
+                //EXIBIR LIGAÇOES NO MAPA
+                listaLigacoes.PosicionarNoPrimeiro();
+                while(listaLigacoes.DadoAtual() != null)
+                {
+                    listaLigacoes.AvancarPosicao();
+                }
+
             }
         }
 
@@ -93,7 +151,7 @@ namespace _22136_22143_Proj2
         // auxiliar o usuário e os campos que precisarão ser limpos para que o usuário digite
         void AtualizarTela()
         {
-            switch(listaCidades.SituacaoAtual)
+            switch (listaCidades.SituacaoAtual)
             {
                 case Situacao.navegando:
                     {
@@ -107,6 +165,7 @@ namespace _22136_22143_Proj2
                             nudY.Value = (decimal)cidadeAtual.Y;
                             stRegistro.Items[0].Text = $"Registro: {listaCidades.PosicaoAtual + 1} / {listaCidades.Tamanho}";
                         }
+                        pbMapa.Invalidate();
                     }
                     break;
 
@@ -147,47 +206,47 @@ namespace _22136_22143_Proj2
                 case Situacao.navegando:
                     {
                         btnAnterior.Enabled = true;
-                        btnInicio.Enabled   = true;
-                        btnProximo.Enabled  = true;
-                        btnUltimo.Enabled   = true;
+                        btnInicio.Enabled = true;
+                        btnProximo.Enabled = true;
+                        btnUltimo.Enabled = true;
                         btnProcurar.Enabled = true;
-                        btnNovo.Enabled     = true;
-                        btnSalvar.Enabled   = true;
-                        btnExcluir.Enabled  = true;
+                        btnNovo.Enabled = true;
+                        btnSalvar.Enabled = true;
+                        btnExcluir.Enabled = true;
 
                         if (listaCidades.EstaNoInicio)
                         {
                             btnAnterior.Enabled = false;
-                            btnInicio.Enabled   = false;
+                            btnInicio.Enabled = false;
                         }
 
                         if (listaCidades.EstaNoFim)
                         {
                             btnProximo.Enabled = false;
-                            btnUltimo.Enabled  = false;
+                            btnUltimo.Enabled = false;
                         }
                     }
                     break;
 
                 case Situacao.pesquisando:
                     {
-                        btnAnterior.Enabled  = false;
-                        btnInicio.Enabled    = false;
-                        btnProximo.Enabled   = false;
-                        btnUltimo.Enabled    = false;
-                        btnNovo.Enabled      = false;
-                        btnExcluir.Enabled   = false;
+                        btnAnterior.Enabled = false;
+                        btnInicio.Enabled = false;
+                        btnProximo.Enabled = false;
+                        btnUltimo.Enabled = false;
+                        btnNovo.Enabled = false;
+                        btnExcluir.Enabled = false;
                     }
                     break;
 
                 case Situacao.incluindo:
                     {
                         btnAnterior.Enabled = false;
-                        btnInicio.Enabled   = false;
-                        btnProximo.Enabled  = false;
-                        btnUltimo.Enabled   = false;
+                        btnInicio.Enabled = false;
+                        btnProximo.Enabled = false;
+                        btnUltimo.Enabled = false;
                         btnProcurar.Enabled = false;
-                        btnExcluir.Enabled  = false;
+                        btnExcluir.Enabled = false;
                     }
                     break;
             }
@@ -228,7 +287,7 @@ namespace _22136_22143_Proj2
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            switch(listaCidades.SituacaoAtual)
+            switch (listaCidades.SituacaoAtual)
             {
                 case Situacao.navegando:
                     {
@@ -292,14 +351,14 @@ namespace _22136_22143_Proj2
             if (listaCidades.SituacaoAtual == Situacao.incluindo)
             {
                 //depois ver como mudar cursor para incluir cidades
-                nudX.Value = (decimal) e.X / pbMapa.Width;
-                nudY.Value = (decimal) e.Y / pbMapa.Height;
+                nudX.Value = (decimal)e.X / pbMapa.Width;
+                nudY.Value = (decimal)e.Y / pbMapa.Height;
             }
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("Você deseja excluir esse registro permanentemente?",
+            if (MessageBox.Show("Você deseja excluir esse registro permanentemente?",
                                 "Deseja Excluir?",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
@@ -343,6 +402,89 @@ namespace _22136_22143_Proj2
                 //gravará os dados armazenados na lista dupla no arquivo fornecido pelo usuário 
                 listaCidades.GravarDados(dlgSalvar.FileName);
             }
+        }
+
+        private void btnAcharCaminho_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        PilhaVetor<Ligacao> BuscarCaminho(Cidade origem, Cidade destino)
+        {
+            Cidade cidadeAtual, saidaAtual;
+            bool achouCaminho = false,
+            naoTemSaida = false;
+            int qtasCidades = cidades.Length;
+            bool[] passou = new bool[qtasCidades];
+            // inicia os valores de “passou” pois ainda não foi em nenhuma cidade
+            for (int indice = 0; indice < qtasCidades; indice++)
+                passou[indice] = false;
+            //lsb.Items.Clear();
+            cidadeAtual = origem;
+            saidaAtual = cidades[0];
+            var pilha = new PilhaVetor<Ligacao>(1000);
+            while (!achouCaminho && !naoTemSaida)
+            {
+                int iSaidaAtual = indiceDaCidade(saidaAtual.Nome);
+                naoTemSaida = (cidadeAtual == origem && saidaAtual == cidades[qtasCidades - 1] && pilha.EstaVazia());
+                if (!naoTemSaida)
+                {
+                    while ((saidaAtual != cidades[qtasCidades - 1]) && !achouCaminho)
+                    {
+                        // se não há saída pela cidade testada, verifica a próxima
+                        int iCidadeAtual = indiceDaCidade(cidadeAtual.Nome);
+                        
+                        if (matrizDeAdjacencia[iCidadeAtual, iSaidaAtual].Distancia == 0)
+                            saidaAtual = cidades[iSaidaAtual++];
+                        else
+                             // se já passou pela cidade testada, vê se a próxima cidade permite saída 
+                             if (passou[iSaidaAtual])
+                                saidaAtual = cidades[iSaidaAtual];
+                             else
+                                 // se chegou na cidade desejada, empilha o local
+                                 // e termina o processo de procura de caminho
+                                if (saidaAtual == destino)
+                                {
+                                    var ligacao = matrizDeAdjacencia[iCidadeAtual, iSaidaAtual];
+                                    Ligacao movim = new Ligacao(cidadeAtual.Nome, saidaAtual.Nome, ligacao.Distancia, 0, ligacao.Custo);
+                                    pilha.Empilhar(movim);
+                                    achouCaminho = true;
+                                    //lsb.Items.Add($"Saiu de {cidadeAtual} para {saidaAtual}");
+                                }
+                                else
+                                {
+                                    //lsb.Items.Add($"Saiu de {cidadeAtual} para {saidaAtual}");
+                                    var ligacao = matrizDeAdjacencia[iCidadeAtual, iSaidaAtual];
+                                    Ligacao movim = new Ligacao(cidadeAtual.Nome, saidaAtual.Nome, ligacao.Distancia, 0, ligacao.Custo);
+                                    pilha.Empilhar(movim);
+                                    passou[iCidadeAtual] = true;
+                                    cidadeAtual = saidaAtual; // muda para a nova cidade 
+                                    saidaAtual = cidades[0]; // reinicia busca de saídas da nova
+                                                    // cidade a partir da primeira cidade
+                                }
+                    }
+                } /// if ! naoTemSaida
+                if (!achouCaminho)
+                    if (!pilha.EstaVazia())
+                    {
+                        var movim = pilha.Desempilhar();
+                        saidaAtual = new Cidade(movim.IdCidadeDestino, 0, 0);
+                        cidadeAtual = new Cidade(movim.IdCidadeOrigem, 0, 0);
+                        //lsb.Items.Add($"Voltando de {saidaAtual} para {cidadeAtual}");
+                        saidaAtual = cidades[iSaidaAtual++];
+                    }
+            }
+            var saida = new PilhaVetor<Ligacao>(1000);
+            if (achouCaminho)
+            { // desempilha a configuração atual da pilha
+              // para a pilha da lista de parâmetros
+                while (!pilha.EstaVazia())
+                {
+                    Ligacao movim = pilha.Desempilhar();
+                    saida.Empilhar(movim);
+                }
+            }
+            return saida;
         }
     }
 }
