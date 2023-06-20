@@ -68,4 +68,22 @@ using System.Threading.Tasks;
         System.Threading.Thread.Sleep(200);
         Application.DoEvents();
     }
+
+    public PilhaVetor<Dado> Clone()
+    {
+        var aux = new PilhaVetor<Dado>(1000);
+        var retorno = new PilhaVetor<Dado>(1000);
+        while(!this.EstaVazia())
+        {
+            aux.Empilhar(this.Desempilhar());
+        }
+        while(!aux.EstaVazia())
+        {
+            var dado = aux.Desempilhar();
+            this.Empilhar(dado);
+            retorno.Empilhar(dado);
+        }
+
+        return retorno;
+    }
   }

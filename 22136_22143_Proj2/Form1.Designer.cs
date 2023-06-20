@@ -71,10 +71,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dgvMelhorCaminho = new System.Windows.Forms.DataGridView();
             this.PassandoPor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lbMelhorCaminho = new System.Windows.Forms.Label();
+            this.dgvCaminhos = new System.Windows.Forms.DataGridView();
             this.caminho1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -84,7 +84,7 @@
             this.caminho7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label5 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lbKm = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
@@ -96,8 +96,8 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMelhorCaminho)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCaminhos)).BeginInit();
             this.SuspendLayout();
             // 
             // pbMapa
@@ -512,8 +512,8 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.dgvMelhorCaminho);
+            this.tabPage2.Controls.Add(this.lbMelhorCaminho);
             this.tabPage2.Controls.Add(this.cbOrigem);
             this.tabPage2.Controls.Add(this.btnAcharCaminho);
             this.tabPage2.Controls.Add(this.nudCusto);
@@ -533,34 +533,34 @@
             this.tabPage2.Text = "Busca";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // dataGridView2
+            // dgvMelhorCaminho
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvMelhorCaminho.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMelhorCaminho.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.PassandoPor});
-            this.dataGridView2.Location = new System.Drawing.Point(126, 189);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(194, 264);
-            this.dataGridView2.TabIndex = 15;
+            this.dgvMelhorCaminho.Location = new System.Drawing.Point(126, 189);
+            this.dgvMelhorCaminho.Name = "dgvMelhorCaminho";
+            this.dgvMelhorCaminho.Size = new System.Drawing.Size(194, 264);
+            this.dgvMelhorCaminho.TabIndex = 15;
             // 
             // PassandoPor
             // 
             this.PassandoPor.HeaderText = "Passando Por";
             this.PassandoPor.Name = "PassandoPor";
             // 
-            // label1
+            // lbMelhorCaminho
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(125, 166);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(195, 20);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Melhor caminho (yyyyy km)";
+            this.lbMelhorCaminho.AutoSize = true;
+            this.lbMelhorCaminho.Location = new System.Drawing.Point(125, 166);
+            this.lbMelhorCaminho.Name = "lbMelhorCaminho";
+            this.lbMelhorCaminho.Size = new System.Drawing.Size(195, 20);
+            this.lbMelhorCaminho.TabIndex = 10;
+            this.lbMelhorCaminho.Text = "Melhor caminho (yyyyy km)";
             // 
-            // dataGridView1
+            // dgvCaminhos
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvCaminhos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCaminhos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.caminho1,
             this.caminho2,
             this.caminho3,
@@ -569,10 +569,12 @@
             this.caminho6,
             this.caminho7,
             this.caminho8});
-            this.dataGridView1.Location = new System.Drawing.Point(359, 557);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(622, 105);
-            this.dataGridView1.TabIndex = 6;
+            this.dgvCaminhos.Location = new System.Drawing.Point(359, 557);
+            this.dgvCaminhos.Name = "dgvCaminhos";
+            this.dgvCaminhos.Size = new System.Drawing.Size(622, 105);
+            this.dgvCaminhos.TabIndex = 6;
+            this.dgvCaminhos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCaminhos_CellClick);
+            this.dgvCaminhos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCaminhos_CellContentClick);
             // 
             // caminho1
             // 
@@ -623,23 +625,23 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Caminhos encontrados:";
             // 
-            // label11
+            // lbKm
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(43, 593);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(305, 20);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "Km do caminho selecionado: (XXXXX km)";
+            this.lbKm.AutoSize = true;
+            this.lbKm.Location = new System.Drawing.Point(43, 593);
+            this.lbKm.Name = "lbKm";
+            this.lbKm.Size = new System.Drawing.Size(305, 20);
+            this.lbKm.TabIndex = 9;
+            this.lbKm.Text = "Km do caminho selecionado: (XXXXX km)";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(994, 687);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.lbKm);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dgvCaminhos);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.stRegistro);
             this.Controls.Add(this.toolStrip1);
@@ -666,8 +668,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMelhorCaminho)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCaminhos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -717,11 +719,11 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvMelhorCaminho;
+        private System.Windows.Forms.Label lbMelhorCaminho;
+        private System.Windows.Forms.DataGridView dgvCaminhos;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lbKm;
         private System.Windows.Forms.DataGridViewTextBoxColumn PassandoPor;
         private System.Windows.Forms.DataGridViewTextBoxColumn caminho1;
         private System.Windows.Forms.DataGridViewTextBoxColumn caminho2;
