@@ -432,6 +432,7 @@ namespace _22136_22143_Proj2
             }
         }
 
+        //Backtracking de cidades
         private void btnAcharCaminho_Click(object sender, EventArgs e)
         {
             var cidadeOrigem = cidades[cbOrigem.SelectedIndex];
@@ -440,6 +441,7 @@ namespace _22136_22143_Proj2
             if (caminhos != null)
             {
                 dgvCaminhos.Columns.Clear();
+                int i = 1;
                 foreach (var caminho in caminhos)
                 {
                     int distanciaTotal = 0;
@@ -461,7 +463,10 @@ namespace _22136_22143_Proj2
                 dgvMelhorCaminho.Rows.Clear();
                 while (!melhorCaminho.EstaVazia())
                 {
-                    dgvMelhorCaminho.Rows.Add(melhorCaminho.Desempilhar().IdCidadeOrigem);
+                    var dado = melhorCaminho.Desempilhar();
+                    dgvMelhorCaminho.Rows.Add(dado.IdCidadeOrigem);
+                    if(melhorCaminho.EstaVazia())
+                        dgvMelhorCaminho.Rows.Add(dado.IdCidadeDestino);
                 }
             }
             else
@@ -553,7 +558,7 @@ namespace _22136_22143_Proj2
         {
             int menor = int.MaxValue;
             PilhaVetor<Ligacao> menorCaminho = new PilhaVetor<Ligacao>(1000);
-            for(int i = 0; i < dgvCaminhos.Columns.Count; i++)
+            for(int i = 0; i < dgvCaminhos.Columns.Count; i++) //encontra o melhor caminho usando o criterio de distancia
             {
                 if (int.Parse(dgvCaminhos.Columns[i].HeaderText) < menor)
                 {
@@ -584,7 +589,6 @@ namespace _22136_22143_Proj2
             // inicia os valores de “passou” pois ainda não foi em nenhuma cidade
             for (int indice = 0; indice < qtasCidades; indice++)
                 passou[indice] = false;
-            //lsb.Items.Clear();
             cidadeAtual = origem;
             saidaAtual = cidades[0];
             var pilha = new PilhaVetor<Ligacao>(1000);
@@ -625,11 +629,9 @@ namespace _22136_22143_Proj2
                                 Ligacao movim = new Ligacao(cidadeAtual.Nome, saidaAtual.Nome, ligacao.Distancia, 0, ligacao.Custo);
                                 pilha.Empilhar(movim);
                                 achouCaminho = true;
-                                //lsb.Items.Add($"Saiu de {cidadeAtual} para {saidaAtual}");
                             }
                             else
                             {
-                                //lsb.Items.Add($"Saiu de {cidadeAtual} para {saidaAtual}");
                                 var ligacao = matrizDeAdjacencia[iCidadeAtual, iSaidaAtual];
                                 Ligacao movim = new Ligacao(cidadeAtual.Nome, saidaAtual.Nome, ligacao.Distancia, 0, ligacao.Custo);
                                 pilha.Empilhar(movim);
@@ -648,27 +650,35 @@ namespace _22136_22143_Proj2
                                 var movim = pilha.Desempilhar();
                                 saidaAtual = cidades[indiceDaCidade(movim.IdCidadeDestino)];
                                 cidadeAtual = cidades[indiceDaCidade(movim.IdCidadeOrigem)];
-                                //lsb.Items.Add($"Voltando de {saidaAtual} para {cidadeAtual}");
+                                passou[indiceDaCidade(saidaAtual.Nome)] = false;
                             }
                             while (saidaAtual == cidades[qtasCidades - 1] && !pilha.EstaVazia());
-                            saidaAtual = cidades[indiceDaCidade(saidaAtual.Nome) + 1];
+                            saidaAtual = cidades[indiceDaCidade(saidaAtual.Nome) + 1]; //testa próxima saida
                         }
                 }
                 if (!naoTemSaida)
                 {
-                    caminhos.Add(pilha);
-                    pilha = pilha.Clone();
+                    caminhos.Add(pilha); //adiciona na lista de caminhos encontrados o caminho encontrado
+                    pilha = pilha.Clone(); //clona o caminho encontrado
                     do
                     {
-                        var ultimaLigacao = pilha.Desempilhar();
+                        var ultimaLigacao = pilha.Desempilhar(); //desfaz o ultimo movimento
                         passou[indiceDaCidade(ultimaLigacao.IdCidadeDestino)] = false;
                         saidaAtual = cidades[indiceDaCidade(ultimaLigacao.IdCidadeDestino)];
-                        cidadeAtual = cidades[indiceDaCidade(ultimaLigacao.IdCidadeOrigem)];
-                        //lsb.Items.Add($"Voltando de {saidaAtual} para {cidadeAtual}");      
+                        cidadeAtual = cidades[indiceDaCidade(ultimaLigacao.IdCidadeOrigem)];      
                     }
                     while (saidaAtual == cidades[qtasCidades - 1] && !pilha.EstaVazia());
 
-                    saidaAtual = cidades[indiceDaCidade(saidaAtual.Nome) + 1];
+                    for (int i = 0; i < passou.Length; i++) //reinicializa o vetor "passou"
+                        passou[i] = false;
+
+                    var copia = pilha.Clone();
+                    while(!copia.EstaVazia())
+                    {
+                        passou[indiceDaCidade(copia.Desempilhar().IdCidadeOrigem)] = true;
+                    }
+
+                    saidaAtual = cidades[indiceDaCidade(saidaAtual.Nome) + 1]; //tenta encontrar um caminho a partir da próxima saida
                     achouCaminho = false;
                 }
             }
@@ -676,6 +686,7 @@ namespace _22136_22143_Proj2
             return caminhos;
         }
 
+        //tratamento de evento para exibição de caminho selecionado
         private void dgvCaminhos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (caminhos != null)
