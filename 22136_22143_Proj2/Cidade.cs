@@ -62,7 +62,10 @@ class Cidade : IComparable<Cidade>, IRegistro, ICriterioDeSeparacao
                 long qtosBytes = qualRegistro * TamanhoRegistro;
                 arquivo.BaseStream.Seek(qtosBytes, SeekOrigin.Begin);
 
-                this.Nome = arquivo.ReadChars(tamNome).ToString();
+                char[] umNome = new char[tamNome];
+                umNome = arquivo.ReadChars(tamNome);
+                string nomeLido = new string(umNome);
+                this.Nome = nomeLido;
                 this.X = arquivo.ReadDouble();
                 this.Y = arquivo.ReadDouble();
             }

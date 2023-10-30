@@ -57,8 +57,8 @@ internal class Ligacao : IComparable<Ligacao>, IRegistro, ICriterioDeSeparacao
         {
             long qtsBytes = qualRegistro * TamanhoRegistro;
             arquivo.BaseStream.Seek(qtsBytes, SeekOrigin.Begin);
-            IdCidadeOrigem = arquivo.ReadChars(tamCodigo).ToString();
-            IdCidadeDestino = arquivo.ReadChars(tamCodigo).ToString();
+            IdCidadeOrigem = new string (arquivo.ReadChars(tamCodigo));
+            IdCidadeDestino = new string (arquivo.ReadChars(tamCodigo));
             Distancia = arquivo.ReadInt32();
             Tempo = arquivo.ReadInt32();
         }

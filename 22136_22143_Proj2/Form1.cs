@@ -36,8 +36,6 @@ namespace _22136_22143_Proj1ED
         Situacao situacaoAtual;
         /*Ligacao[,] matrizDeAdjacencia;
         List<PilhaVetor<Ligacao>> caminhos;*/
-        bool exibindoCaminho = false;
-        int indiceCaminhoExibido = -1;
 
         // quando o formulário for carregado, será feita a leitura
         // dos arquivos necessários para o programa funcionar
@@ -54,32 +52,34 @@ namespace _22136_22143_Proj1ED
                     pbMapa.Invalidate();
 
                     situacaoAtual = Situacao.navegando;
-                    AtualizarTela();
+                    
 
                     if (dlgAbrir.ShowDialog() == DialogResult.OK)
                     {
                         var origem = new FileStream(dlgAbrir.FileName, FileMode.OpenOrCreate);
                         var arquivo = new BinaryReader(origem);
-                        int qualRegistro = 0;
+                        Ligacao novaLigacao = new Ligacao();
+                        int posicaoFinal = (int)arquivo.BaseStream.Length / novaLigacao.TamanhoRegistro - 1;
                         arquivo.BaseStream.Seek(0, SeekOrigin.Begin);
-                        while (origem.Position < origem.Length)
+                        for(int i = 0; i < posicaoFinal; i++)
                         {
-                            var novaLigacao = new Ligacao();
-                            novaLigacao.LerRegistro(arquivo, 0);
+                            novaLigacao = new Ligacao();
+                            novaLigacao.LerRegistro(arquivo, i);
                             var cidadeProcurada = new Cidade(novaLigacao.IdCidadeOrigem, 0, 0);
-                            arvoreCidades.Existe(cidadeProcurada);
-                            arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(novaLigacao);
-
-                            qualRegistro++;
-                            arquivo.BaseStream.Seek(qualRegistro * cidadeProcurada.TamanhoRegistro, SeekOrigin.Begin);
+                            if(arvoreCidades.Existe(cidadeProcurada))
+                                arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(novaLigacao);
                         }
                         arvoreCidades.PosicionarNoPrimeiro();
                     }
+
+                    AtualizarTela();
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("Erro de leitura no arquivo.");
                 }
+
+                
             }
         }
 
@@ -127,24 +127,35 @@ namespace _22136_22143_Proj1ED
                 pen.Color = Color.Black;
                 pen.Width = 2;
 
-                PercorrerInOrdem(arvoreCidades.Raiz, () =>
+                PercorrerInOrdem(arvoreCidades.Raiz, (NoArvore<Cidade> r) =>
                 {
-                    Cidade cidade = arvoreCidades.Atual.Info;
-                    Pen penAtual = new Pen(Color.Black, 2);
-                    Brush brushAtual = new SolidBrush(Color.Yellow);
-                    g.DrawEllipse(penAtual, (float)cidade.X * pbMapa.Width - 5, (float)cidade.Y * pbMapa.Height - 5, 10, 10);
-                    g.FillEllipse(brushAtual, (float)cidade.X * pbMapa.Width - 4, (float)cidade.Y * pbMapa.Height - 4, 8, 8);
-                    g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
+                    Cidade cidade = r.Info;
+
+                    //DESENHAR CIDADES
+                    if (cidade == arvoreCidades.Atual.Info)
+                    {
+                        Pen penAtual = new Pen(Color.Black, 2);
+                        Brush brushAtual = new SolidBrush(Color.Yellow);
+                        g.DrawEllipse(penAtual, (float)cidade.X * pbMapa.Width - 5, (float)cidade.Y * pbMapa.Height - 5, 10, 10);
+                        g.FillEllipse(brushAtual, (float)cidade.X * pbMapa.Width - 4, (float)cidade.Y * pbMapa.Height - 4, 8, 8);
+                        g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
+                    }
+                    else
+                    {
+                        g.DrawEllipse(pen, (float)cidade.X * pbMapa.Width - 5, (float)cidade.Y * pbMapa.Height - 5, 10, 10);
+                        g.FillEllipse(brush, (float)cidade.X * pbMapa.Width - 4, (float)cidade.Y * pbMapa.Height - 4, 8, 8);
+                        g.DrawString(cidade.Nome, fonte, brush2, (float)cidade.X * pbMapa.Width - 8, (float)cidade.Y * pbMapa.Height + 6);
+                    }
                 });
             }
         }
 
-        void PercorrerInOrdem(NoArvore<Cidade> r, Action operacao)
+        void PercorrerInOrdem(NoArvore<Cidade> r,  Action<NoArvore<Cidade>> operacao)
         {
             if (r != null)
             {
                 PercorrerInOrdem(r.Esq, operacao);
-                operacao();
+                operacao(r);
                 PercorrerInOrdem(r.Dir, operacao);
             }
         }
@@ -166,6 +177,27 @@ namespace _22136_22143_Proj1ED
                             txtNome.Text = cidadeAtual.Nome;
                             nudX.Value = (decimal)cidadeAtual.X;
                             nudY.Value = (decimal)cidadeAtual.Y;
+
+                            //Colocar informaçoes no DGV
+                            dgvCaminhos.Columns.Clear();
+                            dgvCaminhos.Rows.Clear();
+                            dgvCaminhos.Columns.Add("cabecalho", "");
+                            dgvCaminhos.Rows.Add(2);
+                            dgvCaminhos[0, 0].Value = "Destino  :";
+                            dgvCaminhos[0, 1].Value = "Distancia:";
+                            dgvCaminhos[0, 2].Value = "Tempo    :";
+
+                            var saidasAtual = cidadeAtual.Saidas;
+                            saidasAtual.IniciarPercursoSequencial();
+                            int n = 1;
+                            while (saidasAtual.PodePercorrer())
+                            {
+                                dgvCaminhos.Columns.Add($"{n}", "");
+                                dgvCaminhos[n, 0].Value = saidasAtual.Atual.Info.IdCidadeDestino;
+                                dgvCaminhos[n, 1].Value = saidasAtual.Atual.Info.Distancia + " Km";
+                                dgvCaminhos[n, 2].Value = saidasAtual.Atual.Info.Tempo + " min";
+                                n++;
+                            }
                         }
                         pbMapa.Invalidate();
                     }
