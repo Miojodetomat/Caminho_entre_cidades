@@ -1,80 +1,99 @@
 ﻿using System;
 using System.IO;
+using apArvore1;
 
 // Nome: Hugo Gomes Soares - RA: 22136
 // Nome: Maria Eduarda de Jesus Padovan - RA: 22143
-internal class Ligacao : IComparable<Ligacao>, IRegistro<Ligacao>
+internal class Ligacao : IComparable<Ligacao>, IRegistro, ICriterioDeSeparacao
 {
-  const int tamCodigo = 15,
-        tamDistancia = 4,
-        tamCusto = 4;
+    const int tamCodigo = 15,
+          tamDistancia = 4,
+          tamTempo = 4;
 
     const int iniCodigoOrigem = 0,
               iniCodigoDestino = iniCodigoOrigem + tamCodigo,
               iniDistancia = iniCodigoDestino + tamCodigo,
-              iniCusto = iniDistancia + tamDistancia;
+              iniTempo = iniDistancia + tamDistancia;
 
 
-  string idCidadeOrigem, idCidadeDestino;
-  int distancia, tempo, custo;
+    string idCidadeOrigem, idCidadeDestino;
+    int distancia, tempo;
 
-  public Ligacao(string idCidadeOrigem, string idCidadeDestino, int distancia, int tempo, int custo)
-  {
-    this.idCidadeOrigem = idCidadeOrigem;
-    this.idCidadeDestino = idCidadeDestino;
-    this.distancia = distancia;
-    this.tempo = tempo;
-    this.custo = custo;
-  }
+    const int tamanhoRegistro = tamCodigo + tamCodigo + sizeof(int) + sizeof(int);
+    
+
+    public Ligacao(string idCidadeOrigem, string idCidadeDestino, int distancia, int tempo)
+    {
+        this.idCidadeOrigem = idCidadeOrigem;
+        this.idCidadeDestino = idCidadeDestino;
+        this.distancia = distancia;
+        this.tempo = tempo;
+    }
 
     public Ligacao()
     {
         this.idCidadeDestino = "";
         this.idCidadeOrigem = "";
         this.tempo = 0;
-        this.custo = 0;
         this.distancia = 0;
     }
 
-  public string IdCidadeOrigem { get => idCidadeOrigem; set => idCidadeOrigem = value; }
-  public string IdCidadeDestino { get => idCidadeDestino; set => idCidadeDestino = value; }
-  public int Distancia { get => distancia; set => distancia = value; }
-  public int Tempo { get => tempo; set => tempo = value; }
-  public int Custo { get => custo; set => custo = value; }
+    public string IdCidadeOrigem { get => idCidadeOrigem; set => idCidadeOrigem = value; }
+    public string IdCidadeDestino { get => idCidadeDestino; set => idCidadeDestino = value; }
+    public int Distancia { get => distancia; set => distancia = value; }
+    public int Tempo { get => tempo; set => tempo = value; }
 
-  public int CompareTo(Ligacao outro)
-  {
-    return (idCidadeOrigem.ToUpperInvariant()+idCidadeDestino.ToUpperInvariant()).CompareTo(
-            outro.idCidadeOrigem.ToUpperInvariant()+outro.idCidadeDestino.ToUpperInvariant());
-  }
+    public int TamanhoRegistro { get => tamanhoRegistro; }
 
-  public Ligacao LerRegistro(StreamReader arquivo)
-  {
-    if (arquivo != null) // arquivo aberto?
+    public int CompareTo(Ligacao outro)
     {
-      string linha = arquivo.ReadLine();
-      IdCidadeOrigem = linha.Substring(iniCodigoOrigem, tamCodigo);
-      IdCidadeDestino = linha.Substring(iniCodigoDestino, tamCodigo);
-      Distancia = int.Parse(linha.Substring(iniDistancia, tamDistancia));
-      Custo = int.Parse(linha.Substring(iniCusto, tamCusto));
-      return this; // retorna o próprio objeto Contato, com os dados
+        return (idCidadeOrigem.ToUpperInvariant() + idCidadeDestino.ToUpperInvariant()).CompareTo(
+                outro.idCidadeOrigem.ToUpperInvariant() + outro.idCidadeDestino.ToUpperInvariant());
     }
-    return default(Ligacao);
-  }
-  public void GravarRegistro(StreamWriter arq)
-  {
-    if (arq != null)  // arquivo de saída aberto?
-    {
-      arq.WriteLine(ParaArquivo());
-    }
-  }
-  public string ParaArquivo()
-  {
-    return $"{IdCidadeOrigem}{IdCidadeDestino}{Distancia:00000}{Tempo:0000}{Custo:00000}";
-  }
 
-  public override string ToString()
-  {
-    return $"{IdCidadeOrigem} {IdCidadeDestino} {Distancia:00000} {Tempo:0000} {Custo:00000}";
-  }
+    public void LerRegistro(BinaryReader arquivo, long qualRegistro)
+    {
+        if (arquivo != null) // arquivo aberto?
+        {
+            long qtsBytes = qualRegistro * TamanhoRegistro;
+            arquivo.BaseStream.Seek(qtsBytes, SeekOrigin.Begin);
+            IdCidadeOrigem = arquivo.ReadChars(tamCodigo).ToString();
+            IdCidadeDestino = arquivo.ReadChars(tamCodigo).ToString();
+            Distancia = arquivo.ReadInt32();
+            Tempo = arquivo.ReadInt32();
+        }
+    }
+    public void GravarRegistro(BinaryWriter arq)
+    {
+        if (arq != null)  // arquivo de saída aberto?
+        {
+            char[] codOrigem = new char[tamCodigo];
+            for (int i = 0; i < tamCodigo; i++)
+                codOrigem[i] = this.idCidadeOrigem[i];
+            arq.Write(codOrigem);
+
+            char[] codDestino = new char[tamCodigo];
+            for (int i = 0; i < tamCodigo; i++)
+                codDestino[i] = this.idCidadeDestino[i];
+            arq.Write(codDestino);
+
+            arq.Write(this.distancia);
+            arq.Write(this.tempo);
+        }
+    }
+
+    public string ParaArquivo()
+    {
+        return $"{IdCidadeOrigem}{IdCidadeDestino}{Distancia:00000}{Tempo:0000}";
+    }
+
+    public override string ToString()
+    {
+        return $"{IdCidadeOrigem} {IdCidadeDestino} {Distancia:00000} {Tempo:0000} ";
+    }
+
+    public bool PodeSeparar()
+    {
+        throw new NotImplementedException();
+    }
 }

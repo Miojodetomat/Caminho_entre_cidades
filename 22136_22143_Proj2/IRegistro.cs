@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
-// Nome: Hugo Gomes Soares - RA: 22136
-// Nome: Maria Eduarda de Jesus Padovan - RA: 22143
-public interface IRegistro<Dado>
+namespace apArvore1
 {
-    Dado LerRegistro(StreamReader arquivo);
-    string ParaArquivo();
-    void GravarRegistro(StreamWriter arquivo);
+  public interface IRegistro
+  {
+    void LerRegistro(BinaryReader arquivo, long qualRegistro);
+    void GravarRegistro(BinaryWriter arquivo);
+    int  TamanhoRegistro { get; }
+  }
 }

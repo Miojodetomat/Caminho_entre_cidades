@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using apArvore1;
+using System.Windows.Forms;
 
 // Nome: Hugo Gomes Soares - RA: 22136
 // Nome: Maria Eduarda de Jesus Padovan - RA: 22143
-class Cidade : IComparable<Cidade>, IRegistro<Cidade>
+class Cidade : IComparable<Cidade>, IRegistro, ICriterioDeSeparacao
   {
     const int tamNome = 15,
               tamX = 6,
@@ -13,18 +15,29 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
               iniX = iniNome + tamNome,
               iniY = iniX + tamX;
 
+    const int tamanhoRegistro = tamNome +
+                                sizeof(double) +
+                                sizeof(double);
+                                
+
     string nome;
     double x, y;
+
+    ListaSimples<Ligacao> saidas;
 
     public string Nome   { get => nome; set => nome = value.PadRight(tamNome, ' ').Substring(0, tamNome); }
     public double X         { get => x; set => x = value; }
     public double Y         { get => y; set => y = value; }
+    public ListaSimples<Ligacao> Saidas { get => saidas; set => saidas = value; }
+
+    public int TamanhoRegistro { get => tamanhoRegistro; }
 
     public Cidade(string nome, double x, double y)
     {
          Nome = nome;
         X = x;
         Y = y;
+        saidas = new ListaSimples<Ligacao>();
     }
 
     public Cidade()
@@ -32,6 +45,7 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
         Nome = "Nome";
         X = 0;
         Y = 0;
+        Saidas = new ListaSimples<Ligacao>();
     }
 
     public int CompareTo(Cidade outro)
@@ -39,24 +53,36 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
         return nome.ToUpperInvariant().CompareTo(outro.nome.ToUpperInvariant());
     }
 
-    public Cidade LerRegistro(StreamReader arquivo)
+    public void LerRegistro(BinaryReader arquivo, long qualRegistro)
     {
       if (arquivo != null) // arquivo aberto?
       {
-        string linha = arquivo.ReadLine();
-        Nome = linha.Substring(iniNome, tamNome);
-        X = double.Parse(linha.Substring(iniX, tamX));
-        Y = double.Parse(linha.Substring(iniY));
-        return this; // retorna o próprio objeto Contato, com os dados
+            try
+            {
+                long qtosBytes = qualRegistro * TamanhoRegistro;
+                arquivo.BaseStream.Seek(qtosBytes, SeekOrigin.Begin);
+
+                this.Nome = arquivo.ReadChars(tamNome).ToString();
+                this.X = arquivo.ReadDouble();
+                this.Y = arquivo.ReadDouble();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
       }
-      return default(Cidade);
     }
 
-    public void GravarRegistro(StreamWriter arq)
+    public void GravarRegistro(BinaryWriter arq)
     {
       if (arq != null)  // arquivo de saída aberto?
       {
-        arq.WriteLine(ParaArquivo());
+        char[] umNome = new char[tamNome];
+            for (int i = 0; i < tamNome; i++)
+                umNome[i] = this.nome[i];
+        arq.Write(umNome);
+        arq.Write(X);
+        arq.Write(Y);
       }
     }
     public string ParaArquivo()
@@ -68,4 +94,9 @@ class Cidade : IComparable<Cidade>, IRegistro<Cidade>
     {
       return Nome + " " + X.ToString().PadLeft(tamX,' ') + Y.ToString().PadLeft(tamY, ' ');
     }
-  }
+
+    public bool PodeSeparar()
+    {
+        throw new NotImplementedException();
+    }
+}
