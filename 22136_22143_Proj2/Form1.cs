@@ -191,7 +191,7 @@ namespace _22136_22143_Proj1ED
                                 txtOrigem.Text = saidasAtual.Atual.Info.IdCidadeOrigem;
                                 txtDestino.Text = saidasAtual.Atual.Info.IdCidadeDestino;
                                 nudDistancia.Value = saidasAtual.Atual.Info.Distancia;
-                                nudDistancia.Value = saidasAtual.Atual.Info.Tempo;
+                                nudTempo.Value = saidasAtual.Atual.Info.Tempo;
                             }
                             else
                             {
@@ -200,7 +200,7 @@ namespace _22136_22143_Proj1ED
                                     txtOrigem.Text = saidasAtual.Primeiro.Info.IdCidadeOrigem;
                                     txtDestino.Text = saidasAtual.Primeiro.Info.IdCidadeDestino;
                                     nudDistancia.Value = saidasAtual.Primeiro.Info.Distancia;
-                                    nudDistancia.Value = saidasAtual.Primeiro.Info.Tempo;
+                                    nudTempo.Value = saidasAtual.Primeiro.Info.Tempo;
                                 }
                                 else
                                 {
@@ -273,7 +273,7 @@ namespace _22136_22143_Proj1ED
                             txtOrigem.Text = saidasAtual.Atual.Info.IdCidadeOrigem;
                             txtDestino.Text = saidasAtual.Atual.Info.IdCidadeDestino;
                             nudDistancia.Value = saidasAtual.Atual.Info.Distancia;
-                            nudDistancia.Value = saidasAtual.Atual.Info.Tempo;
+                            nudTempo.Value = saidasAtual.Atual.Info.Tempo;
                         }
                         else
                         {
@@ -282,7 +282,7 @@ namespace _22136_22143_Proj1ED
                                 txtOrigem.Text = saidasAtual.Primeiro.Info.IdCidadeOrigem;
                                 txtDestino.Text = saidasAtual.Primeiro.Info.IdCidadeDestino;
                                 nudDistancia.Value = saidasAtual.Primeiro.Info.Distancia;
-                                nudDistancia.Value = saidasAtual.Primeiro.Info.Tempo;
+                                nudTempo.Value = saidasAtual.Primeiro.Info.Tempo;
                             }
                             else
                             {
