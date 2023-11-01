@@ -195,10 +195,20 @@ namespace _22136_22143_Proj1ED
                             }
                             else
                             {
-                                txtOrigem.Text = saidasAtual.Primeiro.Info.IdCidadeOrigem;
-                                txtDestino.Text = saidasAtual.Primeiro.Info.IdCidadeDestino;
-                                nudDistancia.Value = saidasAtual.Primeiro.Info.Distancia;
-                                nudDistancia.Value = saidasAtual.Primeiro.Info.Tempo;
+                                if (!saidasAtual.EstaVazia)
+                                {
+                                    txtOrigem.Text = saidasAtual.Primeiro.Info.IdCidadeOrigem;
+                                    txtDestino.Text = saidasAtual.Primeiro.Info.IdCidadeDestino;
+                                    nudDistancia.Value = saidasAtual.Primeiro.Info.Distancia;
+                                    nudDistancia.Value = saidasAtual.Primeiro.Info.Tempo;
+                                }
+                                else
+                                {
+                                    txtOrigem.Text = "";
+                                    txtDestino.Text = "";
+                                    nudDistancia.Value = 0;
+                                    nudTempo.Value = 0;
+                                }
                             }
 
                             saidasAtual.IniciarPercursoSequencial();
@@ -238,7 +248,7 @@ namespace _22136_22143_Proj1ED
                         nudX.Value = 0;
                         nudY.Value = 0;
 
-                        txtOrigem.Text = "";
+                        txtOrigem.Text = arvoreCidades.Atual.Info.Nome;
                         txtDestino.Text = "";
                         nudDistancia.Value = 0;
                         nudTempo.Value = 0;
@@ -256,7 +266,37 @@ namespace _22136_22143_Proj1ED
                     {
                         TestarBotoes();
 
-                        txtNome.Focus();
+                        var saidasAtual = arvoreCidades.Atual.Info.Saidas;
+
+                        if (saidasAtual.Atual != null)
+                        {
+                            txtOrigem.Text = saidasAtual.Atual.Info.IdCidadeOrigem;
+                            txtDestino.Text = saidasAtual.Atual.Info.IdCidadeDestino;
+                            nudDistancia.Value = saidasAtual.Atual.Info.Distancia;
+                            nudDistancia.Value = saidasAtual.Atual.Info.Tempo;
+                        }
+                        else
+                        {
+                            if (!saidasAtual.EstaVazia)
+                            {
+                                txtOrigem.Text = saidasAtual.Primeiro.Info.IdCidadeOrigem;
+                                txtDestino.Text = saidasAtual.Primeiro.Info.IdCidadeDestino;
+                                nudDistancia.Value = saidasAtual.Primeiro.Info.Distancia;
+                                nudDistancia.Value = saidasAtual.Primeiro.Info.Tempo;
+                            }
+                            else
+                            {
+                                txtOrigem.Text = "";
+                                txtDestino.Text = "";
+                                nudDistancia.Value = 0;
+                                nudTempo.Value = 0;
+                            }
+                        }
+
+                        if (tcCaminhosCidades.SelectedTab == tpCidades)
+                            txtNome.Focus();
+                        else
+                            txtDestino.Focus();
                     }
                     break;
             }
@@ -293,6 +333,7 @@ namespace _22136_22143_Proj1ED
                         btnProcurar.Enabled = false;
                         btnExcluir.Enabled = false;
                         btnEditar.Enabled = false;
+
                         if (tcCaminhosCidades.SelectedTab == tpCaminhos)
                             tpCidades.Enabled = false;
                         else
@@ -373,8 +414,10 @@ namespace _22136_22143_Proj1ED
                             }
                             else
                             {
-                                if (txtOrigem.Text != "" && txtDestino.Text != "")
+                                var cidadeAtual = arvoreCidades.Atual.Info;
+                                if (arvoreCidades.Existe(new Cidade(txtOrigem.Text, 0, 0)) && arvoreCidades.Existe(new Cidade(txtDestino.Text, 0, 0)))
                                 {
+                                    arvoreCidades.Existe(cidadeAtual);
                                     arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(new Ligacao(txtOrigem.Text, txtDestino.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value)));
                                     situacaoAtual = Situacao.navegando;
                                     AtualizarTela();
@@ -513,9 +556,12 @@ namespace _22136_22143_Proj1ED
         //tratamento de evento para exibição de caminho selecionado
         private void dgvCaminhos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            var cidadeAtual = arvoreCidades.Atual.Info;
-            cidadeAtual.Saidas.ExisteDado(new Ligacao(cidadeAtual.Nome, dgvCaminhos[e.ColumnIndex, 0].Value.ToString(), 0, 0));
-            AtualizarTela();
+            if (e.ColumnIndex > 0)
+            {
+                var cidadeAtual = arvoreCidades.Atual.Info;
+                cidadeAtual.Saidas.ExisteDado(new Ligacao(cidadeAtual.Nome, dgvCaminhos[e.ColumnIndex, 0].Value.ToString(), 0, 0));
+                AtualizarTela();
+            }
         }
 
         private void dgvCaminhos_CellContentClick(object sender, DataGridViewCellEventArgs e)
