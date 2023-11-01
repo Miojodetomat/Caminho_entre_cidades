@@ -42,6 +42,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnNovo = new System.Windows.Forms.ToolStripButton();
             this.btnCancelar = new System.Windows.Forms.ToolStripButton();
+            this.btnEditar = new System.Windows.Forms.ToolStripButton();
             this.btnSalvar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -62,21 +63,20 @@
             this.caminho7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.caminho8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtOrigem = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtDestino = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.nudDistancia = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.nudTempo = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.tcCaminhosCidades = new System.Windows.Forms.TabControl();
             this.tpCidades = new System.Windows.Forms.TabPage();
             this.tpCaminhos = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnEditar = new System.Windows.Forms.ToolStripButton();
-            this.txtOrigem = new System.Windows.Forms.TextBox();
-            this.txtDestino = new System.Windows.Forms.TextBox();
-            this.nudDistancia = new System.Windows.Forms.NumericUpDown();
-            this.nudTempo = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
@@ -84,11 +84,11 @@
             this.stRegistro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCaminhos)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDistancia)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTempo)).BeginInit();
             this.tcCaminhosCidades.SuspendLayout();
             this.tpCidades.SuspendLayout();
             this.tpCaminhos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDistancia)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTempo)).BeginInit();
             this.SuspendLayout();
             // 
             // pbMapa
@@ -124,7 +124,7 @@
             0,
             0});
             this.nudY.Name = "nudY";
-            this.nudY.Size = new System.Drawing.Size(169, 26);
+            this.nudY.Size = new System.Drawing.Size(169, 30);
             this.nudY.TabIndex = 7;
             // 
             // label4
@@ -133,7 +133,7 @@
             this.label4.Location = new System.Drawing.Point(19, 138);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(116, 20);
+            this.label4.Size = new System.Drawing.Size(145, 25);
             this.label4.TabIndex = 6;
             this.label4.Text = "Coordenada Y:";
             // 
@@ -153,7 +153,7 @@
             0,
             0});
             this.nudX.Name = "nudX";
-            this.nudX.Size = new System.Drawing.Size(169, 26);
+            this.nudX.Size = new System.Drawing.Size(169, 30);
             this.nudX.TabIndex = 5;
             // 
             // label3
@@ -162,7 +162,7 @@
             this.label3.Location = new System.Drawing.Point(19, 100);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 20);
+            this.label3.Size = new System.Drawing.Size(146, 25);
             this.label3.TabIndex = 4;
             this.label3.Text = "Coordenada X:";
             // 
@@ -172,7 +172,7 @@
             this.txtNome.Margin = new System.Windows.Forms.Padding(4);
             this.txtNome.MaxLength = 15;
             this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(169, 26);
+            this.txtNome.Size = new System.Drawing.Size(169, 30);
             this.txtNome.TabIndex = 3;
             // 
             // label2
@@ -181,7 +181,7 @@
             this.label2.Location = new System.Drawing.Point(7, 54);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 20);
+            this.label2.Size = new System.Drawing.Size(160, 25);
             this.label2.TabIndex = 2;
             this.label2.Text = "Nome da cidade:";
             // 
@@ -205,21 +205,21 @@
             this.tsOpcoes.Location = new System.Drawing.Point(0, 0);
             this.tsOpcoes.Name = "tsOpcoes";
             this.tsOpcoes.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.tsOpcoes.Size = new System.Drawing.Size(997, 54);
+            this.tsOpcoes.Size = new System.Drawing.Size(997, 59);
             this.tsOpcoes.TabIndex = 2;
             this.tsOpcoes.Text = "toolStrip1";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 59);
             // 
             // btnProcurar
             // 
             this.btnProcurar.Image = ((System.Drawing.Image)(resources.GetObject("btnProcurar.Image")));
             this.btnProcurar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnProcurar.Name = "btnProcurar";
-            this.btnProcurar.Size = new System.Drawing.Size(56, 51);
+            this.btnProcurar.Size = new System.Drawing.Size(68, 56);
             this.btnProcurar.Text = "Procurar";
             this.btnProcurar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnProcurar.Click += new System.EventHandler(this.btnProcurar_Click);
@@ -227,14 +227,14 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 59);
             // 
             // btnNovo
             // 
             this.btnNovo.Image = ((System.Drawing.Image)(resources.GetObject("btnNovo.Image")));
             this.btnNovo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnNovo.Name = "btnNovo";
-            this.btnNovo.Size = new System.Drawing.Size(40, 51);
+            this.btnNovo.Size = new System.Drawing.Size(49, 56);
             this.btnNovo.Text = "Novo";
             this.btnNovo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnNovo.Click += new System.EventHandler(this.btnNovo_Click);
@@ -244,17 +244,27 @@
             this.btnCancelar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelar.Image")));
             this.btnCancelar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(57, 51);
+            this.btnCancelar.Size = new System.Drawing.Size(70, 56);
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // btnEditar
+            // 
+            this.btnEditar.Image = ((System.Drawing.Image)(resources.GetObject("btnEditar.Image")));
+            this.btnEditar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(52, 56);
+            this.btnEditar.Text = "Editar";
+            this.btnEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
             // 
             // btnSalvar
             // 
             this.btnSalvar.Image = ((System.Drawing.Image)(resources.GetObject("btnSalvar.Image")));
             this.btnSalvar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(42, 51);
+            this.btnSalvar.Size = new System.Drawing.Size(53, 56);
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
@@ -262,19 +272,19 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 59);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 59);
             // 
             // btnExcluir
             // 
             this.btnExcluir.Image = ((System.Drawing.Image)(resources.GetObject("btnExcluir.Image")));
             this.btnExcluir.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnExcluir.Name = "btnExcluir";
-            this.btnExcluir.Size = new System.Drawing.Size(46, 51);
+            this.btnExcluir.Size = new System.Drawing.Size(56, 56);
             this.btnExcluir.Text = "Excluir";
             this.btnExcluir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
@@ -282,14 +292,14 @@
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 54);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 59);
             // 
             // btnSair
             // 
             this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
             this.btnSair.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(36, 51);
+            this.btnSair.Size = new System.Drawing.Size(38, 56);
             this.btnSair.Text = "Sair";
             this.btnSair.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
@@ -300,16 +310,16 @@
             this.stRegistro.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.stRegistro.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.stRegistro.Location = new System.Drawing.Point(0, 666);
+            this.stRegistro.Location = new System.Drawing.Point(0, 662);
             this.stRegistro.Name = "stRegistro";
-            this.stRegistro.Size = new System.Drawing.Size(997, 22);
+            this.stRegistro.Size = new System.Drawing.Size(997, 26);
             this.stRegistro.TabIndex = 4;
             this.stRegistro.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(53, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(67, 20);
             this.toolStripStatusLabel1.Text = "Registro:";
             // 
             // dlgAbrir
@@ -319,6 +329,7 @@
             // dgvCaminhos
             // 
             this.dgvCaminhos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCaminhos.ColumnHeadersVisible = false;
             this.dgvCaminhos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.caminho1,
             this.caminho2,
@@ -328,8 +339,11 @@
             this.caminho6,
             this.caminho7,
             this.caminho8});
+            this.dgvCaminhos.Cursor = System.Windows.Forms.Cursors.Default;
             this.dgvCaminhos.Location = new System.Drawing.Point(12, 557);
             this.dgvCaminhos.Name = "dgvCaminhos";
+            this.dgvCaminhos.ReadOnly = true;
+            this.dgvCaminhos.RowHeadersVisible = false;
             this.dgvCaminhos.RowHeadersWidth = 51;
             this.dgvCaminhos.Size = new System.Drawing.Size(972, 102);
             this.dgvCaminhos.TabIndex = 6;
@@ -341,6 +355,7 @@
             this.caminho1.HeaderText = "1a";
             this.caminho1.MinimumWidth = 6;
             this.caminho1.Name = "caminho1";
+            this.caminho1.ReadOnly = true;
             this.caminho1.Width = 125;
             // 
             // caminho2
@@ -348,6 +363,7 @@
             this.caminho2.HeaderText = "2a";
             this.caminho2.MinimumWidth = 6;
             this.caminho2.Name = "caminho2";
+            this.caminho2.ReadOnly = true;
             this.caminho2.Width = 125;
             // 
             // caminho3
@@ -355,6 +371,7 @@
             this.caminho3.HeaderText = "3a";
             this.caminho3.MinimumWidth = 6;
             this.caminho3.Name = "caminho3";
+            this.caminho3.ReadOnly = true;
             this.caminho3.Width = 125;
             // 
             // caminho4
@@ -362,6 +379,7 @@
             this.caminho4.HeaderText = "4a";
             this.caminho4.MinimumWidth = 6;
             this.caminho4.Name = "caminho4";
+            this.caminho4.ReadOnly = true;
             this.caminho4.Width = 125;
             // 
             // caminho5
@@ -369,6 +387,7 @@
             this.caminho5.HeaderText = "5a";
             this.caminho5.MinimumWidth = 6;
             this.caminho5.Name = "caminho5";
+            this.caminho5.ReadOnly = true;
             this.caminho5.Width = 125;
             // 
             // caminho6
@@ -376,6 +395,7 @@
             this.caminho6.HeaderText = "6a";
             this.caminho6.MinimumWidth = 6;
             this.caminho6.Name = "caminho6";
+            this.caminho6.ReadOnly = true;
             this.caminho6.Width = 125;
             // 
             // caminho7
@@ -383,6 +403,7 @@
             this.caminho7.HeaderText = "7a";
             this.caminho7.MinimumWidth = 6;
             this.caminho7.Name = "caminho7";
+            this.caminho7.ReadOnly = true;
             this.caminho7.Width = 125;
             // 
             // caminho8
@@ -390,6 +411,7 @@
             this.caminho8.HeaderText = "8a";
             this.caminho8.MinimumWidth = 6;
             this.caminho8.Name = "caminho8";
+            this.caminho8.ReadOnly = true;
             this.caminho8.Width = 125;
             // 
             // groupBox1
@@ -412,6 +434,98 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Caminhos";
             // 
+            // txtOrigem
+            // 
+            this.txtOrigem.Location = new System.Drawing.Point(114, 34);
+            this.txtOrigem.Name = "txtOrigem";
+            this.txtOrigem.Size = new System.Drawing.Size(200, 30);
+            this.txtOrigem.TabIndex = 0;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(13, 175);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 25);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "Tempo:";
+            // 
+            // txtDestino
+            // 
+            this.txtDestino.Location = new System.Drawing.Point(114, 78);
+            this.txtDestino.Name = "txtDestino";
+            this.txtDestino.Size = new System.Drawing.Size(200, 30);
+            this.txtDestino.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 131);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(98, 25);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Distancia:";
+            // 
+            // nudDistancia
+            // 
+            this.nudDistancia.Location = new System.Drawing.Point(114, 125);
+            this.nudDistancia.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudDistancia.Name = "nudDistancia";
+            this.nudDistancia.Size = new System.Drawing.Size(159, 30);
+            this.nudDistancia.TabIndex = 2;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 84);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(84, 25);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Destino:";
+            // 
+            // nudTempo
+            // 
+            this.nudTempo.Location = new System.Drawing.Point(114, 169);
+            this.nudTempo.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudTempo.Name = "nudTempo";
+            this.nudTempo.Size = new System.Drawing.Size(159, 30);
+            this.nudTempo.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 40);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(82, 25);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Origem:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(279, 131);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(42, 25);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Km";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(277, 175);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(44, 25);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Min";
+            // 
             // tcCaminhosCidades
             // 
             this.tcCaminhosCidades.Controls.Add(this.tpCidades);
@@ -430,10 +544,10 @@
             this.tpCidades.Controls.Add(this.label3);
             this.tpCidades.Controls.Add(this.label4);
             this.tpCidades.Controls.Add(this.nudX);
-            this.tpCidades.Location = new System.Drawing.Point(4, 29);
+            this.tpCidades.Location = new System.Drawing.Point(4, 34);
             this.tpCidades.Name = "tpCidades";
             this.tpCidades.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCidades.Size = new System.Drawing.Size(332, 226);
+            this.tpCidades.Size = new System.Drawing.Size(332, 221);
             this.tpCidades.TabIndex = 0;
             this.tpCidades.Text = "Cidades";
             this.tpCidades.UseVisualStyleBackColor = true;
@@ -441,10 +555,10 @@
             // tpCaminhos
             // 
             this.tpCaminhos.Controls.Add(this.groupBox1);
-            this.tpCaminhos.Location = new System.Drawing.Point(4, 29);
+            this.tpCaminhos.Location = new System.Drawing.Point(4, 34);
             this.tpCaminhos.Name = "tpCaminhos";
             this.tpCaminhos.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCaminhos.Size = new System.Drawing.Size(332, 226);
+            this.tpCaminhos.Size = new System.Drawing.Size(332, 221);
             this.tpCaminhos.TabIndex = 1;
             this.tpCaminhos.Text = "Caminhos";
             this.tpCaminhos.UseVisualStyleBackColor = true;
@@ -454,115 +568,13 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 521);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(184, 20);
+            this.label1.Size = new System.Drawing.Size(229, 25);
             this.label1.TabIndex = 12;
             this.label1.Text = "Caminhos entre cidades:";
             // 
-            // btnEditar
-            // 
-            this.btnEditar.Image = ((System.Drawing.Image)(resources.GetObject("btnEditar.Image")));
-            this.btnEditar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditar.Name = "btnEditar";
-            this.btnEditar.Size = new System.Drawing.Size(41, 51);
-            this.btnEditar.Text = "Editar";
-            this.btnEditar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
-            // 
-            // txtOrigem
-            // 
-            this.txtOrigem.Location = new System.Drawing.Point(114, 34);
-            this.txtOrigem.Name = "txtOrigem";
-            this.txtOrigem.Size = new System.Drawing.Size(200, 26);
-            this.txtOrigem.TabIndex = 0;
-            // 
-            // txtDestino
-            // 
-            this.txtDestino.Location = new System.Drawing.Point(114, 78);
-            this.txtDestino.Name = "txtDestino";
-            this.txtDestino.Size = new System.Drawing.Size(200, 26);
-            this.txtDestino.TabIndex = 1;
-            // 
-            // nudDistancia
-            // 
-            this.nudDistancia.Location = new System.Drawing.Point(114, 125);
-            this.nudDistancia.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.nudDistancia.Name = "nudDistancia";
-            this.nudDistancia.Size = new System.Drawing.Size(159, 26);
-            this.nudDistancia.TabIndex = 2;
-            // 
-            // nudTempo
-            // 
-            this.nudTempo.Location = new System.Drawing.Point(114, 169);
-            this.nudTempo.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.nudTempo.Name = "nudTempo";
-            this.nudTempo.Size = new System.Drawing.Size(159, 26);
-            this.nudTempo.TabIndex = 3;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(279, 131);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 20);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Km";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(277, 175);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(34, 20);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Min";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 40);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 20);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Origem:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 84);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(68, 20);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Destino:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 131);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(79, 20);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "Distancia:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(13, 175);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(62, 20);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Tempo:";
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(997, 688);
             this.Controls.Add(this.label1);
@@ -588,12 +600,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCaminhos)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDistancia)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTempo)).EndInit();
             this.tcCaminhosCidades.ResumeLayout(false);
             this.tpCidades.ResumeLayout(false);
             this.tpCidades.PerformLayout();
             this.tpCaminhos.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudDistancia)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTempo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
