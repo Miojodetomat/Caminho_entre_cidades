@@ -224,8 +224,25 @@ namespace _22136_22143_Proj1ED
                         nudX.Value = 0;
                         nudY.Value = 0;
 
-                        txtNome.Focus();
+                        txtOrigem.Text = "";
+                        txtDestino.Text = "";
+                        nudDistancia.Value = 0;
+                        nudTempo.Value = 0;
+
+                        if(tcCaminhosCidades.SelectedTab == tpCidades)
+                            txtNome.Focus();
+                        else
+                            txtOrigem.Focus();
+
                         stRegistro.Items[0].Text = "Mensagem: Informe o nome da cidade, clique na posição do mapa onde deseja incluir e depois clique em salvar";
+                    }
+                    break;
+
+                case Situacao.editando: 
+                    {
+                        TestarBotoes();
+
+                        txtNome.Focus();
                     }
                     break;
             }
@@ -243,6 +260,9 @@ namespace _22136_22143_Proj1ED
                         btnNovo.Enabled = true;
                         btnSalvar.Enabled = true;
                         btnExcluir.Enabled = true;
+                        btnEditar.Enabled = true;
+                        tpCaminhos.Enabled = true;
+                        tpCidades.Enabled = true;
                     }
                     break;
 
@@ -250,6 +270,7 @@ namespace _22136_22143_Proj1ED
                     {
                         btnNovo.Enabled = false;
                         btnExcluir.Enabled = false;
+                        btnEditar.Enabled = false;
                     }
                     break;
 
@@ -257,6 +278,19 @@ namespace _22136_22143_Proj1ED
                     {
                         btnProcurar.Enabled = false;
                         btnExcluir.Enabled = false;
+                        btnEditar.Enabled = false;
+                        if (tcCaminhosCidades.SelectedTab == tpCaminhos)
+                            tpCidades.Enabled = false;
+                        else
+                            tpCaminhos.Enabled = false;
+                    }
+                    break;
+
+                case Situacao.editando:
+                    {
+                        btnProcurar.Enabled = false;
+                        btnExcluir.Enabled = false;
+                        btnNovo.Enabled = false;
                     }
                     break;
             }
@@ -306,7 +340,45 @@ namespace _22136_22143_Proj1ED
                         // nos devidos campos pelo usuário
                         try
                         {
-                            arvoreCidades.IncluirNovoRegistro(new Cidade(txtNome.Text, (double)Math.Round(nudX.Value, 3), (double)Math.Round(nudY.Value, 3)));
+                            if (tcCaminhosCidades.SelectedTab == tpCidades)
+                            {
+                                if (txtNome.Text != "")
+                                {
+                                    arvoreCidades.IncluirNovoRegistro(new Cidade(txtNome.Text, (double)Math.Round(nudX.Value, 3), (double)Math.Round(nudY.Value, 3)));
+                                    situacaoAtual = Situacao.navegando;
+                                    AtualizarTela();
+                                    pbMapa.Invalidate();
+                                }
+                                else
+                                    MessageBox.Show("O nome da cidade não pode ser vazio");
+                            }
+                            else
+                            {
+                                if (txtOrigem.Text != "" && txtDestino.Text != "")
+                                {
+                                    arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(new Ligacao(txtOrigem.Text, txtDestino.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value)));
+                                    situacaoAtual = Situacao.navegando;
+                                    AtualizarTela();
+                                }
+                                else
+                                    MessageBox.Show("Os nomes fornecidos são inválidos");
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("A cidade que deseja incluir já está registrada!");
+                        }
+                    }
+                    break;
+
+                case Situacao.editando:
+                    {
+                        try
+                        {
+                            var cidade = arvoreCidades.Atual.Info;
+                            cidade.Nome = txtNome.Text;
+                            cidade.X = (double)Math.Round(nudX.Value, 3);
+                            cidade.Y = (double)Math.Round(nudY.Value, 3);
                             situacaoAtual = Situacao.navegando;
                             AtualizarTela();
                             pbMapa.Invalidate();
@@ -331,10 +403,15 @@ namespace _22136_22143_Proj1ED
             situacaoAtual = Situacao.incluindo;
             AtualizarTela();
         }
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            situacaoAtual = Situacao.editando;
+            AtualizarTela();
+        }
 
         private void pbMapa_MouseClick(object sender, MouseEventArgs e)
         {
-            if (situacaoAtual == Situacao.incluindo)
+            if (situacaoAtual == Situacao.incluindo || situacaoAtual == Situacao.editando)
             {
                 //depois ver como mudar cursor para incluir cidades
                 nudX.Value = (decimal)e.X / pbMapa.Width;

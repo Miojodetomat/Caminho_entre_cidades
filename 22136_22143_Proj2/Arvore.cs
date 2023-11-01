@@ -152,6 +152,8 @@ namespace apArvore1
                     antecessor.Esq = novoNo; // vamos para a esquerda
                 else
                     antecessor.Dir = novoNo; // ou vamos para a direita
+
+                atual = novoNo;
             }
         }
 
