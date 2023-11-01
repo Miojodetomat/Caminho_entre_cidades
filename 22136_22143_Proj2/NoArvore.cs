@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// classe feita em aula
 namespace apArvore1
 {
   public class NoArvore<Dado> : IComparable<NoArvore<Dado>> 
