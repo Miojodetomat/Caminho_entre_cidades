@@ -86,6 +86,8 @@ namespace apArvore1
         {
             DesenharArvore(true, raiz, x, y, Math.PI / 2, Math.PI / 4, 250, g);
         }
+
+        // desenhar a árvore no programa
         private void DesenharArvore(bool primeiraVez, NoArvore<Dado> raiz,
                     int x, int y, double angulo, double incremento,
                     double comprimento, Graphics g)
@@ -96,6 +98,7 @@ namespace apArvore1
                 Pen caneta = new Pen(Color.Red);
                 xf = (int)Math.Round(x + Math.Cos(angulo) * comprimento);
                 yf = (int)Math.Round(y + Math.Sin(angulo) * comprimento);
+
                 if (primeiraVez)
                     yf = 25;
                 g.DrawLine(caneta, x, y, xf, yf);
