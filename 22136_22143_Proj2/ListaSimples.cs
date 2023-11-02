@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using apArvore1;
+using System.Windows.Forms.VisualStyles;
 
 // classe feita em aula
 public class ListaSimples<Dado> where Dado : IComparable<Dado>,
@@ -419,6 +420,46 @@ public class ListaSimples<Dado> where Dado : IComparable<Dado>,
                 ultimo = null;
         }
         quantosNos = 0;
+    }
+
+    public int PosicaoAtual
+    {
+        get
+        {
+            var dadoAtual = Atual;
+
+            int i = 0;
+            atual = primeiro;
+            while (atual != dadoAtual)
+            {
+                atual = atual.Prox;
+                i++;
+            }
+
+            return i;
+        }
+
+        set
+        {
+            if (!EstaVazia && value < this.QuantosNos())
+            {
+                int posicao = value;
+                atual = primeiro;
+                for (int i = 0; i < value; i++)
+                    atual = atual.Prox;
+            }
+        }
+    }
+
+    public void GravarRegistros(BinaryWriter arq)
+    {
+        var posicaoAtual = PosicaoAtual;
+        this.IniciarPercursoSequencial();
+        while(PodePercorrer())
+        {
+            this.Atual.Info.GravarRegistro(arq);
+        }
+        PosicaoAtual = posicaoAtual;
     }
 }
 

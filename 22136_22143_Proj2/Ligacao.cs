@@ -24,10 +24,10 @@ internal class Ligacao : IComparable<Ligacao>, IRegistro, ICriterioDeSeparacao
 
     public Ligacao(string idCidadeOrigem, string idCidadeDestino, int distancia, int tempo)
     {
-        this.idCidadeOrigem = idCidadeOrigem;
-        this.idCidadeDestino = idCidadeDestino;
-        this.distancia = distancia;
-        this.tempo = tempo;
+        this.IdCidadeOrigem = idCidadeOrigem;
+        this.IdCidadeDestino = idCidadeDestino;
+        this.Distancia = distancia;
+        this.Tempo = tempo;
     }
 
     public Ligacao()
@@ -38,8 +38,8 @@ internal class Ligacao : IComparable<Ligacao>, IRegistro, ICriterioDeSeparacao
         this.distancia = 0;
     }
 
-    public string IdCidadeOrigem { get => idCidadeOrigem; set => idCidadeOrigem = value; }
-    public string IdCidadeDestino { get => idCidadeDestino; set => idCidadeDestino = value; }
+    public string IdCidadeOrigem { get => idCidadeOrigem; set => idCidadeOrigem = value.PadRight(tamCodigo, ' ').Substring(0, tamCodigo); }
+    public string IdCidadeDestino { get => idCidadeDestino; set => idCidadeDestino = value.PadRight(tamCodigo, ' ').Substring(0, tamCodigo); }
     public int Distancia { get => distancia; set => distancia = value; }
     public int Tempo { get => tempo; set => tempo = value; }
 
@@ -69,16 +69,16 @@ internal class Ligacao : IComparable<Ligacao>, IRegistro, ICriterioDeSeparacao
         {
             char[] codOrigem = new char[tamCodigo];
             for (int i = 0; i < tamCodigo; i++)
-                codOrigem[i] = this.idCidadeOrigem[i];
+                codOrigem[i] = this.IdCidadeOrigem[i];
             arq.Write(codOrigem);
 
             char[] codDestino = new char[tamCodigo];
             for (int i = 0; i < tamCodigo; i++)
-                codDestino[i] = this.idCidadeDestino[i];
+                codDestino[i] = this.IdCidadeDestino[i];
             arq.Write(codDestino);
 
-            arq.Write(this.distancia);
-            arq.Write(this.tempo);
+            arq.Write(this.Distancia);
+            arq.Write(this.Tempo);
         }
     }
 

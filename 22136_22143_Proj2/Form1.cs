@@ -38,35 +38,36 @@ namespace _22136_22143_Proj1ED
         // dos arquivos necessários para o programa funcionar
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (dlgAbrir.ShowDialog() == DialogResult.OK)
+            if (dlgCidades.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
                     arvoreCidades = new Arvore<Cidade>();
-                    arvoreCidades.LerArquivoDeRegistros(dlgAbrir.FileName);
+                    arvoreCidades.LerArquivoDeRegistros(dlgCidades.FileName);
                     arvoreCidades.PosicionarNoPrimeiro();
 
                     pbMapa.Invalidate();
 
                     situacaoAtual = Situacao.navegando;
-                    
 
-                    if (dlgAbrir.ShowDialog() == DialogResult.OK)
+
+                    if (dlgCaminhos.ShowDialog() == DialogResult.OK)
                     {
-                        var origem = new FileStream(dlgAbrir.FileName, FileMode.OpenOrCreate);
+                        var origem = new FileStream(dlgCaminhos.FileName, FileMode.OpenOrCreate);
                         var arquivo = new BinaryReader(origem);
                         Ligacao novaLigacao = new Ligacao();
                         int posicaoFinal = (int)arquivo.BaseStream.Length / novaLigacao.TamanhoRegistro - 1;
                         arquivo.BaseStream.Seek(0, SeekOrigin.Begin);
-                        for(int i = 0; i < posicaoFinal; i++)
+                        for (int i = 0; i <= posicaoFinal; i++)
                         {
                             novaLigacao = new Ligacao();
                             novaLigacao.LerRegistro(arquivo, i);
                             var cidadeProcurada = new Cidade(novaLigacao.IdCidadeOrigem, 0, 0);
-                            if(arvoreCidades.Existe(cidadeProcurada))
+                            if (arvoreCidades.Existe(cidadeProcurada))
                                 arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(novaLigacao);
                         }
                         arvoreCidades.PosicionarNoPrimeiro();
+                        arquivo.Close();
                     }
 
                     AtualizarTela();
@@ -76,7 +77,7 @@ namespace _22136_22143_Proj1ED
                     MessageBox.Show("Erro de leitura no arquivo.");
                 }
 
-                
+
             }
         }
 
@@ -92,34 +93,6 @@ namespace _22136_22143_Proj1ED
                 Brush brush = new SolidBrush(Color.LightGray);
                 Brush brush2 = new SolidBrush(Color.Black);
                 Font fonte = new Font("Arial", 10);
-
-                //EXIBIR LIGAÇOES NO MAPA
-                /*
-                listaLigacoes.PosicionarNoPrimeiro();
-                while (listaLigacoes.DadoAtual() != null)
-                {
-                    var ligacaoAtual = listaLigacoes.DadoAtual();
-                    var cidadeOrigem = cidades[indiceDaCidade(ligacaoAtual.IdCidadeOrigem)];
-                    var cidadeDestino = cidades[indiceDaCidade(ligacaoAtual.IdCidadeDestino)];
-                    g.DrawLine(pen, (float)cidadeOrigem.X * pbMapa.Width, (float)cidadeOrigem.Y * pbMapa.Height, (float)cidadeDestino.X * pbMapa.Width, (float)cidadeDestino.Y * pbMapa.Height);
-                    listaLigacoes.AvancarPosicao();
-                }
-
-                if (exibindoCaminho)
-                {
-                    pen.Color = Color.Aquamarine;
-                    var pilhaOriginal = caminhos[indiceCaminhoExibido].Clone();
-                    while (!caminhos[indiceCaminhoExibido].EstaVazia())
-                    {
-                        var ligacao = caminhos[indiceCaminhoExibido].Desempilhar();
-                        var origem = cidades[indiceDaCidade(ligacao.IdCidadeOrigem)];
-                        var destino = cidades[indiceDaCidade(ligacao.IdCidadeDestino)];
-                        g.DrawLine(pen, (float)origem.X * pbMapa.Width, (float)origem.Y * pbMapa.Height, (float)destino.X * pbMapa.Width, (float)destino.Y * pbMapa.Height);
-                    }
-                    caminhos[indiceCaminhoExibido] = pilhaOriginal;
-                    exibindoCaminho = false;
-                }*/
-                /////////////////////////////////////////
 
                 pen.Color = Color.Black;
                 pen.Width = 2;
@@ -147,7 +120,7 @@ namespace _22136_22143_Proj1ED
             }
         }
 
-        void PercorrerInOrdem(NoArvore<Cidade> r,  Action<NoArvore<Cidade>> operacao)
+        void PercorrerInOrdem(NoArvore<Cidade> r, Action<NoArvore<Cidade>> operacao)
         {
             if (r != null)
             {
@@ -211,6 +184,8 @@ namespace _22136_22143_Proj1ED
                                 }
                             }
 
+                            var posicaoAtual = saidasAtual.PosicaoAtual;
+
                             saidasAtual.IniciarPercursoSequencial();
                             int n = 1;
                             while (saidasAtual.PodePercorrer())
@@ -221,7 +196,9 @@ namespace _22136_22143_Proj1ED
                                 dgvCaminhos[n, 2].Value = saidasAtual.Atual.Info.Tempo + " min";
                                 n++;
                             }
+                            saidasAtual.PosicaoAtual = posicaoAtual;
                         }
+                        stRegistro.Items[0].Text = "Mensagem: Leia aqui as instruções para cada funcionalidade";
                         pbMapa.Invalidate();
                     }
                     break;
@@ -253,16 +230,21 @@ namespace _22136_22143_Proj1ED
                         nudDistancia.Value = 0;
                         nudTempo.Value = 0;
 
-                        if(tcCaminhosCidades.SelectedTab == tpCidades)
+                        if (tcCaminhosCidades.SelectedTab == tpCidades)
+                        {
                             txtNome.Focus();
+                            stRegistro.Items[0].Text = "Mensagem: Informe o nome da cidade, clique na posição do mapa onde deseja incluir e depois clique em salvar";
+                        }
                         else
-                            txtOrigem.Focus();
-
-                        stRegistro.Items[0].Text = "Mensagem: Informe o nome da cidade, clique na posição do mapa onde deseja incluir e depois clique em salvar";
+                        {
+                            txtOrigem.ReadOnly = true;
+                            txtDestino.Focus();
+                            stRegistro.Items[0].Text = "Mensagem: Informe o nome do destino, a distância e o tempo do caminho a incluir e depois clique em salvar";
+                        }
                     }
                     break;
 
-                case Situacao.editando: 
+                case Situacao.editando:
                     {
                         TestarBotoes();
 
@@ -277,26 +259,22 @@ namespace _22136_22143_Proj1ED
                         }
                         else
                         {
-                            if (!saidasAtual.EstaVazia)
-                            {
-                                txtOrigem.Text = saidasAtual.Primeiro.Info.IdCidadeOrigem;
-                                txtDestino.Text = saidasAtual.Primeiro.Info.IdCidadeDestino;
-                                nudDistancia.Value = saidasAtual.Primeiro.Info.Distancia;
-                                nudTempo.Value = saidasAtual.Primeiro.Info.Tempo;
-                            }
-                            else
-                            {
-                                txtOrigem.Text = "";
-                                txtDestino.Text = "";
-                                nudDistancia.Value = 0;
-                                nudTempo.Value = 0;
-                            }
+                            txtDestino.Text = "";
+                            nudDistancia.Value = 0;
+                            nudTempo.Value = 0;
+
                         }
 
                         if (tcCaminhosCidades.SelectedTab == tpCidades)
+                        {
                             txtNome.Focus();
+                            stRegistro.Items[0].Text = "Mensagem: Digite o novo nome da cidade e clique no mapa onde deseja posicioná-la";
+                        }
                         else
+                        {
                             txtDestino.Focus();
+                            stRegistro.Items[0].Text = "Mensagem: Selecione um caminho na lista de caminhos para editar e então clique em salvar";
+                        }
                     }
                     break;
             }
@@ -317,6 +295,7 @@ namespace _22136_22143_Proj1ED
                         btnEditar.Enabled = true;
                         tpCaminhos.Enabled = true;
                         tpCidades.Enabled = true;
+                        txtOrigem.ReadOnly = false;
                     }
                     break;
 
@@ -325,6 +304,7 @@ namespace _22136_22143_Proj1ED
                         btnNovo.Enabled = false;
                         btnExcluir.Enabled = false;
                         btnEditar.Enabled = false;
+                        tpCaminhos.Enabled = false;
                     }
                     break;
 
@@ -335,9 +315,14 @@ namespace _22136_22143_Proj1ED
                         btnEditar.Enabled = false;
 
                         if (tcCaminhosCidades.SelectedTab == tpCaminhos)
+                        {
                             tpCidades.Enabled = false;
+                            txtOrigem.ReadOnly = true;
+                        }
                         else
+                        {
                             tpCaminhos.Enabled = false;
+                        }
                     }
                     break;
 
@@ -346,11 +331,20 @@ namespace _22136_22143_Proj1ED
                         btnProcurar.Enabled = false;
                         btnExcluir.Enabled = false;
                         btnNovo.Enabled = false;
-                        
+
                         if (tcCaminhosCidades.SelectedTab == tpCaminhos)
+                        {
                             tpCidades.Enabled = false;
+                            txtOrigem.ReadOnly = true;
+                            if (arvoreCidades.Atual.Info.Saidas.Atual == null)
+                                btnSalvar.Enabled = false;
+                            else
+                                btnSalvar.Enabled = true;
+                        }
                         else
+                        {
                             tpCaminhos.Enabled = false;
+                        }
                     }
                     break;
             }
@@ -439,22 +433,30 @@ namespace _22136_22143_Proj1ED
                         {
                             var cidade = arvoreCidades.Atual.Info;
 
-                            if(tcCaminhosCidades.SelectedTab == tpCidades)
-                            { 
+                            if (tcCaminhosCidades.SelectedTab == tpCidades)
+                            {
                                 cidade.Nome = txtNome.Text;
                                 cidade.X = (double)Math.Round(nudX.Value, 3);
                                 cidade.Y = (double)Math.Round(nudY.Value, 3);
+                                situacaoAtual = Situacao.navegando;
+                                AtualizarTela();
+                                pbMapa.Invalidate();
                             }
                             else
                             {
-                                cidade.Saidas.Atual.Info.IdCidadeOrigem = txtOrigem.Text;
-                                cidade.Saidas.Atual.Info.IdCidadeDestino = txtDestino.Text;
-                                cidade.Saidas.Atual.Info.Distancia = (int)Math.Round(nudDistancia.Value);
-                                cidade.Saidas.Atual.Info.Tempo = (int)Math.Round(nudTempo.Value);
+                                if (cidade.Saidas.Atual != null)
+                                {
+                                    cidade.Saidas.Atual.Info.IdCidadeOrigem = txtOrigem.Text;
+                                    cidade.Saidas.Atual.Info.IdCidadeDestino = txtDestino.Text;
+                                    cidade.Saidas.Atual.Info.Distancia = (int)Math.Round(nudDistancia.Value);
+                                    cidade.Saidas.Atual.Info.Tempo = (int)Math.Round(nudTempo.Value);
+                                    situacaoAtual = Situacao.navegando;
+                                    AtualizarTela();
+                                }
+                                else
+                                    MessageBox.Show("É necessário selecionar um caminho a ser editado na lista de caminhos");
                             }
-                            situacaoAtual = Situacao.navegando;
-                            AtualizarTela();
-                            pbMapa.Invalidate();
+
                         }
                         catch (Exception)
                         {
@@ -495,7 +497,7 @@ namespace _22136_22143_Proj1ED
         private void btnExcluir_Click(object sender, EventArgs e)
         {
             if (tcCaminhosCidades.SelectedTab == tpCidades)
-            { 
+            {
                 if (MessageBox.Show("Você deseja excluir essa cidade e todos os seus caminhos permanentemente?",
                                     "Deseja Excluir?",
                                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
@@ -509,15 +511,20 @@ namespace _22136_22143_Proj1ED
             }
             else
             {
-                if (MessageBox.Show("Você deseja excluir esse caminho permanentemente?",
-                                    "Deseja Excluir?",
-                                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (arvoreCidades.Atual.Info.Saidas.Atual != null)
                 {
-                    situacaoAtual = Situacao.excluindo;
-                    arvoreCidades.Atual.Info.Saidas.Remover(arvoreCidades.Atual.Info.Saidas.Atual.Info);
-                    situacaoAtual = Situacao.navegando;
-                    AtualizarTela();
+                    if (MessageBox.Show("Você deseja excluir esse caminho permanentemente?",
+                                        "Deseja Excluir?",
+                                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        situacaoAtual = Situacao.excluindo;
+                        arvoreCidades.Atual.Info.Saidas.Remover(arvoreCidades.Atual.Info.Saidas.Atual.Info);
+                        situacaoAtual = Situacao.navegando;
+                        AtualizarTela();
+                    }
                 }
+                else
+                    MessageBox.Show("É necessário antes selecionar um caminho na lista de caminhos para excluí-lo");
             }
         }
 
@@ -545,14 +552,20 @@ namespace _22136_22143_Proj1ED
 
         void Salvar()
         {
-            // mostrará a tela para que o usuário salve o arquivo
-            if (dlgSalvar.ShowDialog() == DialogResult.OK)
+            //gravará os dados armazenados na arvore no arquivo fornecido pelo usuário 
+            arvoreCidades.GravarArquivoDeRegistros(dlgCidades.FileName);
+
+            var destino = new FileStream(dlgCaminhos.FileName, FileMode.Create);
+            var arquivo = new BinaryWriter(destino);
+            PercorrerInOrdem(arvoreCidades.Raiz, (NoArvore<Cidade> no) =>
             {
-                //gravará os dados armazenados na lista dupla no arquivo fornecido pelo usuário 
-                arvoreCidades.GravarArquivoDeRegistros(dlgSalvar.FileName);
-            }
+                no.Info.Saidas.GravarRegistros(arquivo);
+            });
+            arquivo.Close();
+
+            MessageBox.Show("Registros salvos!");
         }
-     
+
         //tratamento de evento para exibição de caminho selecionado
         private void dgvCaminhos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -567,6 +580,21 @@ namespace _22136_22143_Proj1ED
         private void dgvCaminhos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void tabPage2_Enter(object sender, EventArgs e)
+        {
+            pbArvore.Invalidate();
+        }
+
+        private void pbArvore_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pbArvore_Paint(object sender, PaintEventArgs e)
+        {
+            arvoreCidades.DesenharArvore(pbArvore.Width / 2, 0, e.Graphics);
         }
     }
 }

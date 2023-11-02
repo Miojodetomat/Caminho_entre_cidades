@@ -84,7 +84,7 @@ namespace apArvore1
 
         public void DesenharArvore(int x, int y, Graphics g)
         {
-            DesenharArvore(true, raiz, x, y, 60, 0.5, 100, g);
+            DesenharArvore(true, raiz, x, y, Math.PI / 2, Math.PI / 4, 250, g);
         }
         private void DesenharArvore(bool primeiraVez, NoArvore<Dado> raiz,
                     int x, int y, double angulo, double incremento,
@@ -110,7 +110,7 @@ namespace apArvore1
                 g.FillEllipse(preenchimento, xf - 25, yf - 15, 42, 30);
                 g.DrawString(Convert.ToString(raiz.Info.ToString()),
                              new Font("Comic Sans", 10),
-                             new SolidBrush(Color.Yellow), xf - 23, yf - 7);
+                             new SolidBrush(Color.Black), xf - 23, yf - 7);
             }
         }
         public bool Existe(Dado procurado)

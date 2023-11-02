@@ -82,7 +82,7 @@ class Cidade : IComparable<Cidade>, IRegistro, ICriterioDeSeparacao
       {
         char[] umNome = new char[tamNome];
             for (int i = 0; i < tamNome; i++)
-                umNome[i] = this.nome[i];
+                umNome[i] = this.Nome[i];
         arq.Write(umNome);
         arq.Write(X);
         arq.Write(Y);
@@ -95,7 +95,7 @@ class Cidade : IComparable<Cidade>, IRegistro, ICriterioDeSeparacao
 
     public override string ToString()
     {
-      return Nome + " " + X.ToString().PadLeft(tamX,' ') + Y.ToString().PadLeft(tamY, ' ');
+        return Nome + "\n" + Saidas.QuantosNos(); 
     }
 
     public bool PodeSeparar()
