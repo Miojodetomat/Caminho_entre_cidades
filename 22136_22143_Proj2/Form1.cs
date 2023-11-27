@@ -577,19 +577,9 @@ namespace _22136_22143_Proj1ED
             }
         }
 
-        private void dgvCaminhos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void tabPage2_Enter(object sender, EventArgs e)
         {
             pbArvore.Invalidate();
-        }
-
-        private void pbArvore_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void pbArvore_Paint(object sender, PaintEventArgs e)
