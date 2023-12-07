@@ -79,20 +79,20 @@
             this.dlgCaminhos = new System.Windows.Forms.OpenFileDialog();
             this.tcPrincipal = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbDestino = new System.Windows.Forms.ComboBox();
+            this.cbOrigem = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.nudTempoMin = new System.Windows.Forms.NumericUpDown();
+            this.nudDistMin = new System.Windows.Forms.NumericUpDown();
+            this.lsbPercurso = new System.Windows.Forms.ListBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pbArvore = new System.Windows.Forms.PictureBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.lsbPercurso = new System.Windows.Forms.ListBox();
-            this.nudDistMin = new System.Windows.Forms.NumericUpDown();
-            this.nudTempoMin = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.btnBuscar = new System.Windows.Forms.Button();
-            this.label15 = new System.Windows.Forms.Label();
-            this.cbOrigem = new System.Windows.Forms.ComboBox();
-            this.cbDestino = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
@@ -107,11 +107,11 @@
             this.tpCaminhos.SuspendLayout();
             this.tcPrincipal.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTempoMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDistMin)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbArvore)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDistMin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTempoMin)).BeginInit();
             this.SuspendLayout();
             // 
             // pbMapa
@@ -631,6 +631,121 @@
             this.tabPage1.Text = "Mapa";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.cbDestino);
+            this.groupBox2.Controls.Add(this.cbOrigem);
+            this.groupBox2.Controls.Add(this.label15);
+            this.groupBox2.Controls.Add(this.btnBuscar);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.nudTempoMin);
+            this.groupBox2.Controls.Add(this.nudDistMin);
+            this.groupBox2.Controls.Add(this.lsbPercurso);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Location = new System.Drawing.Point(10, 273);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(345, 278);
+            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Menor Caminho";
+            // 
+            // cbDestino
+            // 
+            this.cbDestino.FormattingEnabled = true;
+            this.cbDestino.Location = new System.Drawing.Point(91, 57);
+            this.cbDestino.Name = "cbDestino";
+            this.cbDestino.Size = new System.Drawing.Size(225, 28);
+            this.cbDestino.TabIndex = 12;
+            // 
+            // cbOrigem
+            // 
+            this.cbOrigem.FormattingEnabled = true;
+            this.cbOrigem.Location = new System.Drawing.Point(91, 22);
+            this.cbOrigem.Name = "cbOrigem";
+            this.cbOrigem.Size = new System.Drawing.Size(225, 28);
+            this.cbOrigem.TabIndex = 11;
+            this.cbOrigem.SelectedIndexChanged += new System.EventHandler(this.cbOrigem_SelectedIndexChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(11, 106);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(76, 20);
+            this.label15.TabIndex = 10;
+            this.label15.Text = "Percurso:";
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.Location = new System.Drawing.Point(234, 91);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(82, 34);
+            this.btnBuscar.TabIndex = 9;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(203, 209);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(62, 20);
+            this.label14.TabIndex = 8;
+            this.label14.Text = "Tempo:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(203, 139);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(79, 20);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "Distancia:";
+            // 
+            // nudTempoMin
+            // 
+            this.nudTempoMin.Location = new System.Drawing.Point(207, 232);
+            this.nudTempoMin.Name = "nudTempoMin";
+            this.nudTempoMin.Size = new System.Drawing.Size(120, 26);
+            this.nudTempoMin.TabIndex = 6;
+            // 
+            // nudDistMin
+            // 
+            this.nudDistMin.Location = new System.Drawing.Point(207, 162);
+            this.nudDistMin.Name = "nudDistMin";
+            this.nudDistMin.Size = new System.Drawing.Size(120, 26);
+            this.nudDistMin.TabIndex = 5;
+            // 
+            // lsbPercurso
+            // 
+            this.lsbPercurso.FormattingEnabled = true;
+            this.lsbPercurso.ItemHeight = 20;
+            this.lsbPercurso.Location = new System.Drawing.Point(15, 129);
+            this.lsbPercurso.Name = "lsbPercurso";
+            this.lsbPercurso.Size = new System.Drawing.Size(169, 144);
+            this.lsbPercurso.TabIndex = 4;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(11, 60);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(68, 20);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Destino:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(11, 25);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(64, 20);
+            this.label11.TabIndex = 2;
+            this.label11.Text = "Origem:";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.pbArvore);
@@ -654,122 +769,6 @@
             this.pbArvore.TabIndex = 0;
             this.pbArvore.TabStop = false;
             this.pbArvore.Paint += new System.Windows.Forms.PaintEventHandler(this.pbArvore_Paint);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.cbDestino);
-            this.groupBox2.Controls.Add(this.cbOrigem);
-            this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Controls.Add(this.btnBuscar);
-            this.groupBox2.Controls.Add(this.label14);
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.nudTempoMin);
-            this.groupBox2.Controls.Add(this.nudDistMin);
-            this.groupBox2.Controls.Add(this.lsbPercurso);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Location = new System.Drawing.Point(10, 273);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(345, 278);
-            this.groupBox2.TabIndex = 13;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Menor Caminho";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 25);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(64, 20);
-            this.label11.TabIndex = 2;
-            this.label11.Text = "Origem:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(11, 60);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(68, 20);
-            this.label12.TabIndex = 3;
-            this.label12.Text = "Destino:";
-            // 
-            // lsbPercurso
-            // 
-            this.lsbPercurso.FormattingEnabled = true;
-            this.lsbPercurso.ItemHeight = 20;
-            this.lsbPercurso.Location = new System.Drawing.Point(15, 129);
-            this.lsbPercurso.Name = "lsbPercurso";
-            this.lsbPercurso.Size = new System.Drawing.Size(169, 144);
-            this.lsbPercurso.TabIndex = 4;
-            // 
-            // nudDistMin
-            // 
-            this.nudDistMin.Location = new System.Drawing.Point(207, 162);
-            this.nudDistMin.Name = "nudDistMin";
-            this.nudDistMin.Size = new System.Drawing.Size(120, 26);
-            this.nudDistMin.TabIndex = 5;
-            // 
-            // nudTempoMin
-            // 
-            this.nudTempoMin.Location = new System.Drawing.Point(207, 232);
-            this.nudTempoMin.Name = "nudTempoMin";
-            this.nudTempoMin.Size = new System.Drawing.Size(120, 26);
-            this.nudTempoMin.TabIndex = 6;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(203, 139);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(79, 20);
-            this.label13.TabIndex = 7;
-            this.label13.Text = "Distancia:";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(203, 209);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(62, 20);
-            this.label14.TabIndex = 8;
-            this.label14.Text = "Tempo:";
-            // 
-            // btnBuscar
-            // 
-            this.btnBuscar.Location = new System.Drawing.Point(234, 91);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(82, 34);
-            this.btnBuscar.TabIndex = 9;
-            this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
-            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(11, 106);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(76, 20);
-            this.label15.TabIndex = 10;
-            this.label15.Text = "Percurso:";
-            // 
-            // cbOrigem
-            // 
-            this.cbOrigem.FormattingEnabled = true;
-            this.cbOrigem.Location = new System.Drawing.Point(91, 22);
-            this.cbOrigem.Name = "cbOrigem";
-            this.cbOrigem.Size = new System.Drawing.Size(225, 28);
-            this.cbOrigem.TabIndex = 11;
-            this.cbOrigem.SelectedIndexChanged += new System.EventHandler(this.cbOrigem_SelectedIndexChanged);
-            // 
-            // cbDestino
-            // 
-            this.cbDestino.Enabled = false;
-            this.cbDestino.FormattingEnabled = true;
-            this.cbDestino.Location = new System.Drawing.Point(91, 57);
-            this.cbDestino.Name = "cbDestino";
-            this.cbDestino.Size = new System.Drawing.Size(225, 28);
-            this.cbDestino.TabIndex = 12;
             // 
             // Form1
             // 
@@ -805,12 +804,12 @@
             this.tcPrincipal.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbArvore)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDistMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTempoMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDistMin)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbArvore)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

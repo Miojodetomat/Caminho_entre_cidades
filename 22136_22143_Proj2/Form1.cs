@@ -78,6 +78,7 @@ namespace _22136_22143_Proj1ED
                     {
                         oGrafo.NovoVertice(r.Info.Nome);
                         cbOrigem.Items.Add(r.Info.Nome);
+                        cbDestino.Items.Add(r.Info.Nome);
                     });
 
                     PercorrerInOrdem(arvoreCidades.Raiz, (NoArvore<Cidade> r) =>
@@ -86,7 +87,7 @@ namespace _22136_22143_Proj1ED
                         while (r.Info.Saidas.PodePercorrer())
                         {
                             oGrafo.NovaAresta(cbOrigem.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeOrigem),
-                                              cbOrigem.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeDestino),
+                                              cbDestino.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeDestino),
                                               r.Info.Saidas.Atual.Info.Distancia);
                         }
                     });
@@ -610,19 +611,19 @@ namespace _22136_22143_Proj1ED
 
         private void cbOrigem_SelectedIndexChanged(object sender, EventArgs e)
         {
-            arvoreCidades.Existe(new Cidade(cbOrigem.SelectedItem.ToString(), 0, 0));
+            /*arvoreCidades.Existe(new Cidade(cbOrigem.SelectedItem.ToString(), 0, 0));
             cbDestino.Enabled = true;
             cbDestino.Items.Clear();
             arvoreCidades.Atual.Info.Saidas.IniciarPercursoSequencial();
             while(arvoreCidades.Atual.Info.Saidas.PodePercorrer())
             {
                 cbDestino.Items.Add(arvoreCidades.Atual.Info.Saidas.Atual.Info.IdCidadeDestino);
-            }
+            }*/
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            
+            lsbPercurso.Items.Clear();
             lsbPercurso.Items.Add(oGrafo.Caminho(cbOrigem.SelectedIndex, cbOrigem.Items.IndexOf(cbDestino.SelectedItem.ToString()), lsbPercurso));
         }
     }
