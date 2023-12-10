@@ -102,8 +102,6 @@ namespace _22136_22143_Proj1ED
                 {
                     MessageBox.Show("Erro de leitura no arquivo.");
                 }
-
-
             }
         }
 
@@ -425,6 +423,9 @@ namespace _22136_22143_Proj1ED
                                 if (txtNome.Text != "")
                                 {
                                     arvoreCidades.IncluirNovoRegistro(new Cidade(txtNome.Text, (double)Math.Round(nudX.Value, 3), (double)Math.Round(nudY.Value, 3)));
+                                    oGrafo.NovoVertice(txtNome.Text);
+                                    cbOrigem.Items.Add(txtNome.Text);
+                                    cbDestino.Items.Add(txtNome.Text);
                                     situacaoAtual = Situacao.navegando;
                                     AtualizarTela();
                                     pbMapa.Invalidate();
@@ -437,13 +438,19 @@ namespace _22136_22143_Proj1ED
                                 var cidadeAtual = arvoreCidades.Atual.Info;
                                 if (arvoreCidades.Existe(new Cidade(txtOrigem.Text, 0, 0)) && arvoreCidades.Existe(new Cidade(txtDestino.Text, 0, 0)))
                                 {
+                                    arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(new Ligacao(txtDestino.Text, txtOrigem.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value)));
+                                    oGrafo.NovaAresta(cbDestino.Items.IndexOf(txtDestino.Text.PadRight(15, ' ').Substring(0, 15)), cbOrigem.Items.IndexOf(txtOrigem.Text.PadRight(15, ' ').Substring(0, 15)), (int)Math.Round(nudDistancia.Value));
                                     arvoreCidades.Existe(cidadeAtual);
                                     arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(new Ligacao(txtOrigem.Text, txtDestino.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value)));
+                                    oGrafo.NovaAresta(cbOrigem.Items.IndexOf(txtOrigem.Text.PadRight(15, ' ').Substring(0, 15)), cbDestino.Items.IndexOf(txtDestino.Text.PadRight(15, ' ').Substring(0, 15)), (int)Math.Round(nudDistancia.Value));
                                     situacaoAtual = Situacao.navegando;
                                     AtualizarTela();
                                 }
                                 else
+                                {
                                     MessageBox.Show("Os nomes fornecidos são inválidos");
+                                    arvoreCidades.Existe(cidadeAtual);
+                                }
                             }
                         }
                         catch (Exception)
