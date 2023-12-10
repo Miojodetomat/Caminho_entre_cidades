@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using apArvore1;
+using apGrafo;
 
 namespace _22136_22143_Proj1ED
 {
@@ -31,6 +32,7 @@ namespace _22136_22143_Proj1ED
             navegando, excluindo, incluindo, pesquisando, editando
         }
 
+        Grafo oGrafo;
         Arvore<Cidade> arvoreCidades;
         Situacao situacaoAtual;
 
@@ -65,10 +67,34 @@ namespace _22136_22143_Proj1ED
                             var cidadeProcurada = new Cidade(novaLigacao.IdCidadeOrigem, 0, 0);
                             if (arvoreCidades.Existe(cidadeProcurada))
                                 arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(novaLigacao);
+                            if (arvoreCidades.Existe(new Cidade(novaLigacao.IdCidadeDestino, 0, 0))) //ida e volta
+                                arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(
+                                    new Ligacao(novaLigacao.IdCidadeDestino, novaLigacao.IdCidadeOrigem,
+                                                novaLigacao.Distancia, novaLigacao.Tempo));
                         }
                         arvoreCidades.PosicionarNoPrimeiro();
                         arquivo.Close();
                     }
+
+                    //Grafo caminhos
+                    oGrafo = new Grafo(null);
+                    PercorrerInOrdem(arvoreCidades.Raiz, (NoArvore<Cidade> r) =>
+                    {
+                        oGrafo.NovoVertice(r.Info.Nome);
+                        cbOrigem.Items.Add(r.Info.Nome);
+                        cbDestino.Items.Add(r.Info.Nome);
+                    });
+
+                    PercorrerInOrdem(arvoreCidades.Raiz, (NoArvore<Cidade> r) =>
+                    {
+                        r.Info.Saidas.IniciarPercursoSequencial();
+                        while (r.Info.Saidas.PodePercorrer())
+                        {
+                            oGrafo.NovaAresta(cbOrigem.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeOrigem),
+                                              cbDestino.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeDestino),
+                                              r.Info.Saidas.Atual.Info.Distancia);
+                        }
+                    });
 
                     AtualizarTela();
                 }
@@ -577,24 +603,32 @@ namespace _22136_22143_Proj1ED
             }
         }
 
-        private void dgvCaminhos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void tabPage2_Enter(object sender, EventArgs e)
         {
             pbArvore.Invalidate();
         }
 
-        private void pbArvore_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void pbArvore_Paint(object sender, PaintEventArgs e)
         {
             arvoreCidades.DesenharArvore(pbArvore.Width / 2, 0, e.Graphics);
+        }
+
+        private void cbOrigem_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            /*arvoreCidades.Existe(new Cidade(cbOrigem.SelectedItem.ToString(), 0, 0));
+            cbDestino.Enabled = true;
+            cbDestino.Items.Clear();
+            arvoreCidades.Atual.Info.Saidas.IniciarPercursoSequencial();
+            while(arvoreCidades.Atual.Info.Saidas.PodePercorrer())
+            {
+                cbDestino.Items.Add(arvoreCidades.Atual.Info.Saidas.Atual.Info.IdCidadeDestino);
+            }*/
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            lsbPercurso.Items.Clear();
+            lsbPercurso.Items.Add(oGrafo.Caminho(cbOrigem.SelectedIndex, cbOrigem.Items.IndexOf(cbDestino.SelectedItem.ToString()), lsbPercurso));
         }
     }
 }
