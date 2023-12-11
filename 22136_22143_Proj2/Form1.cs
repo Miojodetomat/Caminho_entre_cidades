@@ -72,7 +72,7 @@ namespace _22136_22143_Proj1ED
                         arquivo.Close();
                     }
 
-                    //Grafo caminhos
+                    // grafo caminhos
                     oGrafo = new Grafo(null);
                     PercorrerInOrdem(arvoreCidades.Raiz, (NoArvore<Cidade> r) =>
                     {
@@ -124,7 +124,7 @@ namespace _22136_22143_Proj1ED
                 {
                     Cidade cidade = r.Info;
 
-                    //DESENHAR CIDADES
+                    // DESENHAR CIDADES
                     if (cidade == arvoreCidades.Atual.Info)
                     {
                         Pen penAtual = new Pen(Color.Black, 2);
@@ -389,7 +389,7 @@ namespace _22136_22143_Proj1ED
             {
                 case Situacao.navegando:
                     {
-                        //Chama o método que executa a operação de salvar em arquivo .txt
+                        // chama o método que executa a operação de salvar em arquivo .txt
                         Salvar();
                     }
                     break;
@@ -468,7 +468,7 @@ namespace _22136_22143_Proj1ED
 
                             if (tcCaminhosCidades.SelectedTab == tpCidades)
                             {
-                                //Não deve existir previamente
+                                // não deve existir previamente
                                 if (arvoreCidades.Existe(new Cidade(txtNome.Text, 0, 0)))
                                 {
                                     arvoreCidades.Existe(cidade);
@@ -491,7 +491,7 @@ namespace _22136_22143_Proj1ED
                             {
                                 if (cidade.Saidas.Atual != null)
                                 {
-                                    //Deve existir previamente
+                                    // deve existir previamente
                                     if (arvoreCidades.Existe(new Cidade(txtDestino.Text, 0, 0)))
                                     {
                                         arvoreCidades.Existe(cidade);
@@ -550,7 +550,6 @@ namespace _22136_22143_Proj1ED
         {
             if (situacaoAtual == Situacao.incluindo || situacaoAtual == Situacao.editando)
             {
-                //depois ver como mudar cursor para incluir cidades
                 nudX.Value = (decimal)e.X / pbMapa.Width;
                 nudY.Value = (decimal)e.Y / pbMapa.Height;
             }
@@ -570,7 +569,7 @@ namespace _22136_22143_Proj1ED
                     arvoreCidades.ApagarNo(arvoreCidades.Atual.Info);
                     cbOrigem.Items.RemoveAt(iCidade);
                     cbDestino.Items.RemoveAt(iCidade);
-                    situacaoAtual = Situacao.navegando; //olhar depois onde que o atual fica
+                    situacaoAtual = Situacao.navegando;
                     AtualizarTela();
                     pbMapa.Invalidate();
                 }
@@ -622,7 +621,7 @@ namespace _22136_22143_Proj1ED
 
         void Salvar()
         {
-            //gravará os dados armazenados na arvore no arquivo fornecido pelo usuário 
+            // gravará os dados armazenados na arvore no arquivo fornecido pelo usuário 
             arvoreCidades.GravarArquivoDeRegistros(dlgCidades.FileName);
 
             var destino = new FileStream(dlgCaminhos.FileName, FileMode.Create);
@@ -636,7 +635,7 @@ namespace _22136_22143_Proj1ED
             MessageBox.Show("Registros salvos!");
         }
 
-        //tratamento de evento para exibição de caminho selecionado
+        // tratamento de evento para exibição de caminho selecionado
         private void dgvCaminhos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex > 0)

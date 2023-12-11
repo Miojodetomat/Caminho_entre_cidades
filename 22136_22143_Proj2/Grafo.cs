@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+// Nome: Hugo Gomes Soares - RA: 22136
+// Nome: Maria Eduarda de Jesus Padovan - RA: 22143
 namespace apGrafo
 {
     class Grafo
