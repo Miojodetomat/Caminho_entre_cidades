@@ -10,7 +10,7 @@ namespace apGrafo
 
         Vertice[] vertices;
 
-        int[,] adjMatrix;
+        Ligacao[,] adjMatrix;  
 
         int numVerts;      // tamanho lógico (número de vértices atual)
 
@@ -20,18 +20,19 @@ namespace apGrafo
         DistOriginal[] percurso;
         int infinity = 10000000;
         int verticeAtual;     // global usada para indicar o vértice atualmente sendo visitado
-        int doInicioAteAtual; // global usada para ajustar menor caminho com Dijkstra
+        int doInicioAteAtualDist; // global usada para ajustar menor caminho com Dijkstra
+        int doInicioAteAtualTemp;
 
         public Grafo(DataGridView dgv)
         {
             this.dgv = dgv;
             vertices = new Vertice[NUM_VERTICES];
-            adjMatrix = new int[NUM_VERTICES, NUM_VERTICES];
+            adjMatrix = new Ligacao[NUM_VERTICES, NUM_VERTICES];
             numVerts = 0;
 
             for (int j = 0; j < NUM_VERTICES; j++) // inicia toda a matriz
                 for (int k = 0; k < NUM_VERTICES; k++)
-                    adjMatrix[j, k] = infinity;       // distância tão grande que não existe
+                    adjMatrix[j, k] = new Ligacao("", "", infinity, infinity);       // distância tão grande que não existe
 
             percurso = new DistOriginal[NUM_VERTICES];
         }
@@ -48,36 +49,27 @@ namespace apGrafo
             }
         }
 
+        public void EditarVertice(int v, string novaLabel)
+        {
+            if (v < numVerts)
+                vertices[v].Rotulo = novaLabel;
+        }
+
         public void NovaAresta(int inicio, int fim)
         {
-            adjMatrix[inicio, fim] = 1;
+            adjMatrix[inicio, fim] = new Ligacao(vertices[inicio].Rotulo, vertices[fim].Rotulo, 1, 0);
             // adjMatrix[fim, inicio] = 1; ISSO GERA CICLOS!!!
         }
 
-        public void NovaAresta(int inicio, int fim, int peso)
+        public void NovaAresta(int inicio, int fim, Ligacao peso)
         {
             adjMatrix[inicio, fim] = peso;
         }
 
-        public void NovaAresta(string inicio, string fim, int peso)
+        public void EditarAresta(int inicio, int fimOrig, int novoFim, Ligacao novoPeso)
         {
-            bool achou2 = false;
-            bool achou1 = false;
-            int i;
-            for (i = 0; i < numVerts; i++)
-            {
-                if (vertices[i].Rotulo == inicio)
-                    achou1 = true;
-            }
-            int j;
-            for (j = 0; j < numVerts; j++)
-            {
-                if (vertices[j].Rotulo == fim)
-                    achou2 = true;
-            }
-
-            if (achou1 && achou2)
-                adjMatrix[i, j] = peso;
+            adjMatrix[inicio, fimOrig] = new Ligacao("", "", infinity, infinity);
+            adjMatrix[inicio, novoFim] = novoPeso;
         }
 
         public void ExibirVertice(int v)
@@ -96,7 +88,7 @@ namespace apGrafo
             {
                 temAresta = false;
                 for (int col = 0; col < numVerts; col++)
-                    if (adjMatrix[linha, col] > 0)
+                    if (adjMatrix[linha, col].Distancia > 0)
                     {
                         temAresta = true;
                         break;
@@ -132,6 +124,12 @@ namespace apGrafo
                 MessageBox.Show("Retornando à ordenação");
             }
         }
+
+        public void RemoverAresta(int inicio, int fim)
+        {
+            adjMatrix[inicio, fim] = new Ligacao("", "", infinity, infinity);
+        }
+
         private void MoverLinhas(int row, int length)
         {
             if (row != numVerts - 1)
@@ -179,7 +177,7 @@ namespace apGrafo
         private int ObterVerticeAdjacenteNaoVisitado(int v)
         {
             for (int j = 0; j <= numVerts - 1; j++)
-                if ((adjMatrix[v, j] == 1) && (!vertices[j].FoiVisitado))
+                if ((adjMatrix[v, j].Distancia == 1) && (!vertices[j].FoiVisitado))
                     return j;
             return -1;
         }
@@ -232,7 +230,7 @@ namespace apGrafo
                 vertices[i].FoiVisitado = false;
         }
 
-        public string Caminho(int inicioDoPercurso, int finalDoPercurso, ListBox lista)
+        public string Caminho(int inicioDoPercurso, int finalDoPercurso, ListBox lista, NumericUpDown distancia, NumericUpDown tempo)
         {
             for (int j = 0; j < numVerts; j++)
                 vertices[j].FoiVisitado = false;
@@ -242,8 +240,9 @@ namespace apGrafo
             {
                 // anotamos no vetor percurso a distância entre o inicioDoPercurso e cada vértice
                 // se não há ligação direta, o valor da distância será infinity
-                int tempDist = adjMatrix[inicioDoPercurso, j];
-                percurso[j] = new DistOriginal(inicioDoPercurso, tempDist);
+                int dist = adjMatrix[inicioDoPercurso, j].Distancia;
+                int temp = adjMatrix[inicioDoPercurso, j].Tempo;
+                percurso[j] = new DistOriginal(inicioDoPercurso, dist, temp);
             }
 
             for (int nTree = 0; nTree < numVerts; nTree++)
@@ -257,36 +256,14 @@ namespace apGrafo
                 // o vértice com a menor distância passa a ser o vértice atual
                 // para compararmos com a distância calculada em AjustarMenorCaminho()
                 verticeAtual = indiceDoMenor;
-                doInicioAteAtual = percurso[indiceDoMenor].distancia;
+                doInicioAteAtualDist = percurso[indiceDoMenor].distancia;
+                doInicioAteAtualTemp = percurso[indiceDoMenor].tempo;
 
                 // visitamos o vértice com a menor distância desde o inicioDoPercurso
                 vertices[verticeAtual].FoiVisitado = true;
                 AjustarMenorCaminho(lista);
             }
-            return ExibirPercursos(inicioDoPercurso, finalDoPercurso, lista);
-        }
-
-        public string Caminho(string inicioDoPercurso, string finalDoPercurso, ListBox lista)
-        {
-            int i;
-            bool achou1 = false;
-            bool achou2 = false;
-            for(i = 0; i < numVerts; i++)
-            {
-                if (vertices[i].Rotulo == inicioDoPercurso)
-                    achou1 = true;
-            }
-            int j;
-            for (j = 0; j < numVerts; j++)
-            {
-                if (vertices[j].Rotulo == finalDoPercurso)
-                    achou1 = true;
-            }
-
-            if(achou1 && achou2)
-                return Caminho(i, j, lista);
-
-            return null;
+            return ExibirPercursos(inicioDoPercurso, finalDoPercurso, lista, distancia, tempo);
         }
 
         public int ObterMenor()
@@ -309,20 +286,23 @@ namespace apGrafo
                 if (!vertices[coluna].FoiVisitado) // para cada vértice ainda não visitado
                 {
                     // acessamos a distância desde o vértice atual (pode ser infinity)
-                    int atualAteMargem = adjMatrix[verticeAtual, coluna];
+                    int atualAteMargemDist = adjMatrix[verticeAtual, coluna].Distancia;
+                    int atualAteMargemTemp = adjMatrix[verticeAtual, coluna].Tempo;
 
                     // calculamos a distância desde inicioDoPercurso passando por vertice atual até
                     // esta saída
-                    int doInicioAteMargem = doInicioAteAtual + atualAteMargem;
+                    int doInicioAteMargemDist = doInicioAteAtualDist + atualAteMargemDist;
+                    int doInicioAteMargemTemp = doInicioAteAtualTemp + atualAteMargemTemp;
 
                     // quando encontra uma distância menor, marca o vértice a partir do
                     // qual chegamos no vértice de índice coluna, e a soma da distância
                     // percorrida para nele chegar
                     int distanciaDoCaminho = percurso[coluna].distancia;
-                    if (doInicioAteMargem < distanciaDoCaminho)
+                    if (doInicioAteMargemDist < distanciaDoCaminho)
                     {
                         percurso[coluna].verticePai = verticeAtual;
-                        percurso[coluna].distancia = doInicioAteMargem;
+                        percurso[coluna].distancia = doInicioAteMargemDist;
+                        percurso[coluna].tempo = doInicioAteMargemTemp;
                         //ExibirTabela(lista);
                     }
                 }
@@ -345,7 +325,7 @@ namespace apGrafo
         }
 
         public string ExibirPercursos(int inicioDoPercurso, int finalDoPercurso,
-        ListBox lista)
+        ListBox lista, NumericUpDown dist, NumericUpDown temp)
         {
             /*string resultado = "";
             for (int j = 0; j < numVerts; j++)
@@ -368,6 +348,11 @@ namespace apGrafo
 
             int onde = finalDoPercurso;
             Stack<string> pilha = new Stack<string>();
+            if (percurso[onde].distancia != infinity)
+            {
+                dist.Value = percurso[onde].distancia;
+                temp.Value = percurso[onde].tempo;
+            }
 
             int cont = 0;
             while (onde != inicioDoPercurso)

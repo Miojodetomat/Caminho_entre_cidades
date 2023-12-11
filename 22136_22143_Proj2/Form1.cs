@@ -67,10 +67,6 @@ namespace _22136_22143_Proj1ED
                             var cidadeProcurada = new Cidade(novaLigacao.IdCidadeOrigem, 0, 0);
                             if (arvoreCidades.Existe(cidadeProcurada))
                                 arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(novaLigacao);
-                            if (arvoreCidades.Existe(new Cidade(novaLigacao.IdCidadeDestino, 0, 0))) //ida e volta
-                                arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(
-                                    new Ligacao(novaLigacao.IdCidadeDestino, novaLigacao.IdCidadeOrigem,
-                                                novaLigacao.Distancia, novaLigacao.Tempo));
                         }
                         arvoreCidades.PosicionarNoPrimeiro();
                         arquivo.Close();
@@ -92,7 +88,10 @@ namespace _22136_22143_Proj1ED
                         {
                             oGrafo.NovaAresta(cbOrigem.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeOrigem),
                                               cbDestino.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeDestino),
-                                              r.Info.Saidas.Atual.Info.Distancia);
+                                              r.Info.Saidas.Atual.Info);
+                            oGrafo.NovaAresta(cbDestino.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeDestino),
+                                                cbOrigem.Items.IndexOf(r.Info.Saidas.Atual.Info.IdCidadeOrigem),
+                                                r.Info.Saidas.Atual.Info);
                         }
                     });
 
@@ -423,9 +422,9 @@ namespace _22136_22143_Proj1ED
                                 if (txtNome.Text != "")
                                 {
                                     arvoreCidades.IncluirNovoRegistro(new Cidade(txtNome.Text, (double)Math.Round(nudX.Value, 3), (double)Math.Round(nudY.Value, 3)));
-                                    oGrafo.NovoVertice(txtNome.Text);
-                                    cbOrigem.Items.Add(txtNome.Text);
-                                    cbDestino.Items.Add(txtNome.Text);
+                                    oGrafo.NovoVertice(txtNome.Text.PadRight(15, ' ').Substring(0, 15));
+                                    cbOrigem.Items.Add(txtNome.Text.PadRight(15, ' ').Substring(0, 15));
+                                    cbDestino.Items.Add(txtNome.Text.PadRight(15, ' ').Substring(0, 15));
                                     situacaoAtual = Situacao.navegando;
                                     AtualizarTela();
                                     pbMapa.Invalidate();
@@ -438,11 +437,12 @@ namespace _22136_22143_Proj1ED
                                 var cidadeAtual = arvoreCidades.Atual.Info;
                                 if (arvoreCidades.Existe(new Cidade(txtOrigem.Text, 0, 0)) && arvoreCidades.Existe(new Cidade(txtDestino.Text, 0, 0)))
                                 {
-                                    arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(new Ligacao(txtDestino.Text, txtOrigem.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value)));
-                                    oGrafo.NovaAresta(cbDestino.Items.IndexOf(txtDestino.Text.PadRight(15, ' ').Substring(0, 15)), cbOrigem.Items.IndexOf(txtOrigem.Text.PadRight(15, ' ').Substring(0, 15)), (int)Math.Round(nudDistancia.Value));
+                                    var ligacao = new Ligacao(txtDestino.Text, txtOrigem.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value));
+                                    oGrafo.NovaAresta(cbDestino.Items.IndexOf(txtDestino.Text.PadRight(15, ' ').Substring(0, 15)), cbOrigem.Items.IndexOf(txtOrigem.Text), ligacao);
                                     arvoreCidades.Existe(cidadeAtual);
-                                    arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(new Ligacao(txtOrigem.Text, txtDestino.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value)));
-                                    oGrafo.NovaAresta(cbOrigem.Items.IndexOf(txtOrigem.Text.PadRight(15, ' ').Substring(0, 15)), cbDestino.Items.IndexOf(txtDestino.Text.PadRight(15, ' ').Substring(0, 15)), (int)Math.Round(nudDistancia.Value));
+                                    var ligacaoVolta = new Ligacao(txtOrigem.Text, txtDestino.Text, (int)Math.Round(nudDistancia.Value), (int)Math.Round(nudTempo.Value));
+                                    arvoreCidades.Atual.Info.Saidas.InserirEmOrdem(ligacaoVolta);
+                                    oGrafo.NovaAresta(cbOrigem.Items.IndexOf(txtOrigem.Text), cbDestino.Items.IndexOf(txtDestino.Text.PadRight(15, ' ').Substring(0, 15)), ligacaoVolta);
                                     situacaoAtual = Situacao.navegando;
                                     AtualizarTela();
                                 }
@@ -468,9 +468,21 @@ namespace _22136_22143_Proj1ED
 
                             if (tcCaminhosCidades.SelectedTab == tpCidades)
                             {
+                                //Não deve existir previamente
+                                if (arvoreCidades.Existe(new Cidade(txtNome.Text, 0, 0)))
+                                {
+                                    arvoreCidades.Existe(cidade);
+                                    throw new Exception("Cidade já existe");
+                                }
+
+                                arvoreCidades.Existe(cidade);
+                                int iCidade = cbOrigem.Items.IndexOf(cidade.Nome);
                                 cidade.Nome = txtNome.Text;
                                 cidade.X = (double)Math.Round(nudX.Value, 3);
                                 cidade.Y = (double)Math.Round(nudY.Value, 3);
+                                oGrafo.EditarVertice(iCidade, cidade.Nome);
+                                cbOrigem.Items[iCidade] = cidade.Nome;
+                                cbDestino.Items[iCidade] = cidade.Nome;
                                 situacaoAtual = Situacao.navegando;
                                 AtualizarTela();
                                 pbMapa.Invalidate();
@@ -479,10 +491,27 @@ namespace _22136_22143_Proj1ED
                             {
                                 if (cidade.Saidas.Atual != null)
                                 {
-                                    cidade.Saidas.Atual.Info.IdCidadeOrigem = txtOrigem.Text;
-                                    cidade.Saidas.Atual.Info.IdCidadeDestino = txtDestino.Text;
-                                    cidade.Saidas.Atual.Info.Distancia = (int)Math.Round(nudDistancia.Value);
-                                    cidade.Saidas.Atual.Info.Tempo = (int)Math.Round(nudTempo.Value);
+                                    //Deve existir previamente
+                                    if (arvoreCidades.Existe(new Cidade(txtDestino.Text, 0, 0)))
+                                    {
+                                        arvoreCidades.Existe(cidade);
+                                        int iOrigemOriginal = cbOrigem.Items.IndexOf(cidade.Saidas.Atual.Info.IdCidadeOrigem);
+                                        int iDestinoOriginal = cbDestino.Items.IndexOf(cidade.Saidas.Atual.Info.IdCidadeDestino);
+                                        cidade.Saidas.Atual.Info.IdCidadeOrigem = txtOrigem.Text;
+                                        cidade.Saidas.Atual.Info.IdCidadeDestino = txtDestino.Text;
+                                        cidade.Saidas.Atual.Info.Distancia = (int)Math.Round(nudDistancia.Value);
+                                        cidade.Saidas.Atual.Info.Tempo = (int)Math.Round(nudTempo.Value);
+                                        oGrafo.RemoverAresta(iDestinoOriginal, iOrigemOriginal);
+                                        oGrafo.EditarAresta(iOrigemOriginal, iDestinoOriginal, 
+                                                            cbDestino.Items.IndexOf(cidade.Saidas.Atual.Info.IdCidadeDestino), cidade.Saidas.Atual.Info);
+                                        oGrafo.NovaAresta(cbDestino.Items.IndexOf(cidade.Saidas.Atual.Info.IdCidadeDestino), iOrigemOriginal, cidade.Saidas.Atual.Info);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("A cidade de destino precisa estar previamente cadastrada!");
+                                        arvoreCidades.Existe(cidade);
+                                    }
+
                                     situacaoAtual = Situacao.navegando;
                                     AtualizarTela();
                                 }
@@ -493,7 +522,7 @@ namespace _22136_22143_Proj1ED
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("A cidade que deseja incluir já está registrada!");
+                            MessageBox.Show("O nome que deseja alterar já está em uso!");
                         }
                     }
                     break;
@@ -536,7 +565,11 @@ namespace _22136_22143_Proj1ED
                                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     situacaoAtual = Situacao.excluindo;
+                    int iCidade = cbOrigem.Items.IndexOf(arvoreCidades.Atual.Info.Nome);
+                    oGrafo.RemoverVertice(iCidade);
                     arvoreCidades.ApagarNo(arvoreCidades.Atual.Info);
+                    cbOrigem.Items.RemoveAt(iCidade);
+                    cbDestino.Items.RemoveAt(iCidade);
                     situacaoAtual = Situacao.navegando; //olhar depois onde que o atual fica
                     AtualizarTela();
                     pbMapa.Invalidate();
@@ -551,6 +584,10 @@ namespace _22136_22143_Proj1ED
                                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         situacaoAtual = Situacao.excluindo;
+                        int iOrig = cbOrigem.Items.IndexOf(arvoreCidades.Atual.Info.Nome);
+                        int iDest = cbDestino.Items.IndexOf(arvoreCidades.Atual.Info.Saidas.Atual.Info.IdCidadeDestino);
+                        oGrafo.RemoverAresta(iOrig, iDest);
+                        oGrafo.RemoverAresta(iDest, iOrig);
                         arvoreCidades.Atual.Info.Saidas.Remover(arvoreCidades.Atual.Info.Saidas.Atual.Info);
                         situacaoAtual = Situacao.navegando;
                         AtualizarTela();
@@ -635,7 +672,9 @@ namespace _22136_22143_Proj1ED
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             lsbPercurso.Items.Clear();
-            lsbPercurso.Items.Add(oGrafo.Caminho(cbOrigem.SelectedIndex, cbOrigem.Items.IndexOf(cbDestino.SelectedItem.ToString()), lsbPercurso));
+            nudDistMin.Value = 0;
+            nudTempoMin.Value = 0;
+            lsbPercurso.Items.Add(oGrafo.Caminho(cbOrigem.SelectedIndex, cbOrigem.Items.IndexOf(cbDestino.SelectedItem.ToString()), lsbPercurso, nudDistMin, nudTempoMin));
         }
     }
 }
